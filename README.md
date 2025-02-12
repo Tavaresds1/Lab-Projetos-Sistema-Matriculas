@@ -1,24 +1,27 @@
-1. Histórias de Usuário
+## 1. Histórias de Usuário
 
-1.1 Aluno
-HU01 - Realizar matrícula
+### 1.1 Aluno
 
-Como um aluno, quero me matricular em até 4 disciplinas obrigatórias e 2 optativas, para participar no semestre.
+**HU01 - Realizar matrícula**
 
-HU02 - Cancelar matrícula
+> Como um aluno, quero me matricular em até 4 disciplinas obrigatórias e 2 optativas, para participar no semestre.
 
-Como um aluno, quero cancelar minha matrícula em uma disciplina, para ajustar minha grade de horários.
+**HU02 - Cancelar matrícula**
 
-2.2 Secretaria
-HU03 - Gerar currículo
+> Como um aluno, quero cancelar minha matrícula em uma disciplina, para ajustar minha grade de horários.
 
-Como um funcionário da secretaria, quero criar e atualizar o currículo do semestre, para garantir a organização das disciplinas.
+### 1.2 Secretaria
 
-HU04 - Gerenciar Usuários
+**HU03 - Gerar currículo**
 
-Como um funcionário da secretaria, gerenciar informações sobre professores e alunos, para manter o sistema atualizado.
+> Como um funcionário da secretaria, quero criar e atualizar o currículo do semestre, para garantir a organização das disciplinas.
 
-2.3 Professor
-HU05 - Verificar matriculados
+**HU04 - Gerenciar Usuários**
 
-Como um professor, quero acessar a lista de alunos matriculados nas minhas disciplinas.
+> Como um funcionário da secretaria, gerenciar informações sobre professores e alunos, para manter o sistema atualizado.
+
+### 1.3 Professor
+
+**HU05 - Verificar matriculados**
+
+> Como um professor, quero acessar a lista de alunos matriculados nas minhas disciplinas.
