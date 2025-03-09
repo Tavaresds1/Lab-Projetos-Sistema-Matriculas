@@ -1,15 +1,24 @@
-class Usuario {
+class Usuario implements IUsuario {
 
-	protected String login;
+	private String login;
 
-	protected String senha;
+	private String senha;
 
 	public Usuario(String login, String senha) {
 
+		this.login = login;
+		this.senha = senha;
 	}
 
 	public boolean validarLogin(String login, String senha) {
-		return false;
+
+		if (this.login.equals(login) && this.senha.equals(senha)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+
 	}
 
 }
