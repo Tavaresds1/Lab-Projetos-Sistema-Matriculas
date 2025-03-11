@@ -4,14 +4,14 @@ import java.util.List;
 class Disciplina {
 
     private String nome;
-    private boolean ativa;
+    protected boolean ativa;
     private int creditos;
     static final int maxAluno = 60;
     static final int minAluno = 3;
-    private List<Aluno> alunosMatriculados;
+    protected List<Aluno> alunosMatriculados;
     private Professor professor;
 
-    public Disciplina(String nome, int creditos, Professor professor) {
+    public Disciplina(String nome, int creditos, Professor professor, List<Aluno> alunosMatriculados) {
         this.nome = nome;
         this.creditos = creditos;
         this.professor = professor;
