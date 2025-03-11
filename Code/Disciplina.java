@@ -3,11 +3,11 @@ import java.util.List;
 
 class Disciplina {
 
-    private String nome;
+    protected String nome;
     protected boolean ativa;
-    private int creditos;
-    static final int maxAluno = 60;
-    static final int minAluno = 3;
+    protected int creditos;
+    protected static final int maxAluno = 60;
+    protected static final int minAluno = 3;
     protected List<Aluno> alunosMatriculados;
     private Professor professor;
 
