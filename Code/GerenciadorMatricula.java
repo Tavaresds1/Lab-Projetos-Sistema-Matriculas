@@ -8,6 +8,9 @@ class GerenciadorMatricula {
         this.disciplinas = disciplinas;
     }
 
+    public GerenciadorMatricula() {
+    }
+
     public boolean matricularAluno(Aluno aluno, Disciplina disciplina) {
         if (disciplina.matricularAluno(aluno)) {
             return true;
