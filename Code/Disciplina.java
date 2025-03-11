@@ -1,37 +1,70 @@
+import java.util.ArrayList;
 import java.util.List;
 
 class Disciplina {
 
-	private String nome;
+    private String nome;
+    private boolean ativa;
+    private int creditos;
+    static final int maxAluno = 60;
+    static final int minAluno = 3;
+    private List<Aluno> alunosMatriculados;
+    private Professor professor;
 
-	private int creditos;
+    public Disciplina(String nome, int creditos, Professor professor) {
+        this.nome = nome;
+        this.creditos = creditos;
+        this.professor = professor;
+        this.alunosMatriculados = new ArrayList<>();
+        this.ativa = false;
+    }
 
-	private boolean ativa;
+    public boolean matricularAluno(Aluno aluno) {
+        if (alunosMatriculados.size() < maxAluno) {
+            alunosMatriculados.add(aluno);
+            verificarAtivacao();
+            return true;
+        }
+        return false;
+    }
 
-	static final int maxAluno = 60;
+    private void verificarAtivacao() {
+        if (alunosMatriculados.size() >= minAluno) {
+            ativa = true;
+        } else {
+            ativa = false;
+        }
+    }
 
-	static final int minAluno = 3;
+    public List<Aluno> getAlunosMatriculados() {
+        return alunosMatriculados;
+    }
 
-	private List<Aluno> alunosMatriculados;
+    public String getNome() {
+        return nome;
+    }
 
-	private Professor professor;
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	private Aluno[] aluno;
+    public boolean isAtiva() {
+        return ativa;
+    }
 
-	public Disciplina(String nome, int creditos, Professor professor) {
+    public int getCreditos() {
+        return creditos;
+    }
 
-	}
+    public void setCreditos(int creditos) {
+        this.creditos = creditos;
+    }
 
-	public boolean matricularAluno(Aluno aluno) {
-		return false;
-	}
+    public Professor getProfessor() {
+        return professor;
+    }
 
-	private boolean verificarAtivacao() {
-		return false;
-	}
-
-	public List<Aluno> getAlunosMatriculados() {
-		return null;
-	}
-
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
 }

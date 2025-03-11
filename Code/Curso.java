@@ -2,20 +2,40 @@ import java.util.List;
 
 class Curso {
 
-	private String nome;
+    private String nome;
+    private int creditos;
+    private List<Disciplina> disciplinas;
 
-	private int creditos;
+    public Curso(String nome, int creditos) {
+        this.nome = nome;
+        this.creditos = creditos;
+    }
 
-	private List<Disciplina> disciplina;
+    public void adicionarDisciplina(Disciplina disciplina) {
+        this.disciplinas.add(disciplina);
+    }
 
-	private Disciplina[] disciplina;
+    public String getNome() {
+        return nome;
+    }
 
-	public Curso(String nome, int creditos) {
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	}
+    public int getCreditos() {
+        return creditos;
+    }
 
-	public void adicionarDisciplina(Disciplina disciplina) {
+    public void setCreditos(int creditos) {
+        this.creditos = creditos;
+    }
 
-	}
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
 
+    public void setDisciplinas(List<Disciplina> disciplinas) {
+        this.disciplinas = disciplinas;
+    }
 }
