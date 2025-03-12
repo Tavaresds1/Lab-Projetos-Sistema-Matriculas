@@ -9,8 +9,7 @@ Como um **Aluno**, quero me matricular em até 4 disciplinas obrigatórias e 2 o
 1. O **Aluno** acessa o sistema e realiza o login.
 2. O sistema exibe as disciplinas disponíveis para o semestre, separadas em obrigatórias e optativas.
 3. O **Aluno** seleciona até 4 disciplinas obrigatórias e 2 optativas.
-4. O sistema verifica se há conflitos de horário e se o **Aluno** atende aos pré-requisitos.
-5. O sistema confirma a matrícula e atualiza a grade de horários do **Aluno**.
+4. O sistema confirma a matrícula e atualiza a grade de horários do **Aluno**.
 
 **Fluxo Alternativo:**
 - Se houver conflito de horário ou falta de pré-requisitos, o sistema informa o **Aluno** e sugere ajustes.
@@ -24,7 +23,7 @@ Como um **Aluno**, quero cancelar minha matrícula em uma disciplina, para ajust
 1. O **Aluno** acessa o sistema e realiza o login.
 2. O sistema exibe as disciplinas em que o **Aluno** está matriculado.
 3. O **Aluno** seleciona a disciplina que deseja cancelar.
-4. O sistema remove a matrícula da disciplina e atualiza a grade de horários do **Aluno**.
+4. O sistema remove a matrícula da disciplina.
 
 **Fluxo Alternativo:**
 - Se o prazo para cancelamento tiver expirado, o sistema informa o **Aluno** que o cancelamento não é mais possível.
