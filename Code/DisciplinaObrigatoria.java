@@ -22,5 +22,12 @@ public class DisciplinaObrigatoria extends Disciplina {
             ativa = false;
         }
     }
+    @Override
+    public String toString() {
+        return "DisciplinaObrigatoria{" +
+                "nome='" + nome + '\'' +
+                ", creditos=" + creditos+ "}";
+
+    }
 
 }
