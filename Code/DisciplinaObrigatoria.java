@@ -2,8 +2,8 @@ import java.util.List;
 
 public class DisciplinaObrigatoria extends Disciplina {
 
-    public DisciplinaObrigatoria(String nome, int creditos, Professor professor, List<Aluno> alunosMatriculados) {
-        super(nome, creditos, professor, alunosMatriculados);
+    public DisciplinaObrigatoria(String nome, int creditos, Professor professor) {
+        super(nome, creditos, professor);
     }
 
     public boolean matricularAluno(Aluno aluno) {

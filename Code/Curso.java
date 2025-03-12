@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 class Curso {
@@ -9,9 +10,13 @@ class Curso {
     public Curso(String nome, int creditos) {
         this.nome = nome;
         this.creditos = creditos;
+        this.disciplinas = new ArrayList<>();
     }
 
-    public void adicionarDisciplina(Disciplina disciplina) {
+    public void adicionarDisciplinaObrigatoria(DisciplinaObrigatoria disciplina) {
+        this.disciplinas.add(disciplina);
+    }
+    public void adicionarDisciplinaOptativa(DisciplinaOptativa disciplina) {
         this.disciplinas.add(disciplina);
     }
 

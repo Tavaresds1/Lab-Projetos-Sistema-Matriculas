@@ -5,13 +5,13 @@ public class SistemaCobranca {
         int totalCreditos = 0;
 
         // Calcular créditos das disciplinas obrigatórias
-        for (DisciplinaObrigatoria disciplina : aluno.getDisciplinasMatriculadasObrigatoria()) {
-            totalCreditos += disciplina.getCreditos();
+        for (Object disciplina : aluno.getDisciplinasMatriculadasObrigatoria()) {
+            totalCreditos += DisciplinaObrigatoria.getCreditos();
         }
 
         // Calcular créditos das disciplinas optativas
-        for (DisciplinaOptativa disciplina : aluno.getDisciplinasMatriculadasOptativa()) {
-            totalCreditos += disciplina.getCreditos();
+        for (Object disciplina : aluno.getDisciplinasMatriculadasOptativa()) {
+            totalCreditos += DisciplinaOptativa.getCreditos();
         }
 
         // Valor da cobrança por crédito

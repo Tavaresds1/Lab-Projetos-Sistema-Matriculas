@@ -21,7 +21,7 @@ class GerenciadorMatricula {
     public void cancelarMatriculaAluno(Aluno aluno, Disciplina disciplina) {
         if (disciplina.getAlunosMatriculados().contains(aluno)) {
             disciplina.getAlunosMatriculados().remove(aluno);
-            disciplina.verificarAtivacao();
+
         }
     }
     

@@ -1,3 +1,4 @@
+import java.util.Collection;
 import java.util.List;
 
 class Aluno {
@@ -54,4 +55,15 @@ class Aluno {
 	}
 
 
+	public List getDisciplinasMatriculadasObrigatoria() {
+		return disciplinasMatriculadasObrigatoria;
+	}
+
+	public List getDisciplinasMatriculadasOptativa() {
+		return disciplinasMatriculadasOptativa;
+	}
+
+	public String getMatricula() {
+		return matricula;
+	}
 }

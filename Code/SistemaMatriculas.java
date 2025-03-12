@@ -92,7 +92,6 @@ class SistemaMatriculas {
     public void verificarDisciplinasAtivas() {
         List<Disciplina> disciplinas = gerenciadorDisciplina.listarDisciplinas();
         for (Disciplina disciplina : disciplinas) {
-            disciplina.verificarAtivacao();
             if (!disciplina.isAtiva()) {
                 System.out.println("Disciplina " + disciplina.getNome() + " foi cancelada por falta de alunos.");
             }

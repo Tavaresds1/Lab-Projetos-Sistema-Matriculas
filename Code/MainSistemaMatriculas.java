@@ -1,6 +1,7 @@
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import java.util.List;
 
 public class MainSistemaMatriculas {
     public static void main(String[] args) {
@@ -21,10 +22,10 @@ public class MainSistemaMatriculas {
             // Criar disciplinas
             DisciplinaObrigatoria poo = new DisciplinaObrigatoria("Programação Orientada a Objetos", 4, professor);
             DisciplinaObrigatoria bd = new DisciplinaObrigatoria("Banco de Dados", 4, professor);
-            DisciplinaObrigatoria redes = new DisciplinaObrigatoria("Redes de Computadores", 4, professor);
+            DisciplinaOptativa redes = new DisciplinaOptativa("Redes de Computadores", 4, professor);
             DisciplinaObrigatoria engSoft = new DisciplinaObrigatoria("Engenharia de Software", 4, professor);
             DisciplinaOptativa ia = new DisciplinaOptativa("Inteligência Artificial", 2, professor);
-            DisciplinaOptativa mobile = new DisciplinaOptativa("Desenvolvimento Mobile", 2, professor);
+            DisciplinaObrigatoria mobile = new DisciplinaObrigatoria("Desenvolvimento Mobile", 2, professor);
             
             // Adicionar disciplinas ao sistema
             sistema.getGerenciadorDisciplina().adicionarDisciplina(poo);
@@ -35,12 +36,12 @@ public class MainSistemaMatriculas {
             sistema.getGerenciadorDisciplina().adicionarDisciplina(mobile);
             
             // Adicionar disciplinas ao curso
-            curso.adicionarDisciplina(poo);
-            curso.adicionarDisciplina(bd);
-            curso.adicionarDisciplina(redes);
-            curso.adicionarDisciplina(engSoft);
-            curso.adicionarDisciplina(ia);
-            curso.adicionarDisciplina(mobile);
+            curso.adicionarDisciplinaObrigatoria(poo);
+            curso.adicionarDisciplinaObrigatoria(bd);
+            curso.adicionarDisciplinaOptativa(redes);
+            curso.adicionarDisciplinaObrigatoria(engSoft);
+            curso.adicionarDisciplinaOptativa(ia);
+            curso.adicionarDisciplinaObrigatoria(mobile);
             
             // Criar alunos
             Usuario usuarioAluno1 = new Usuario("aluno1", "senha456");

@@ -5,13 +5,13 @@ class Disciplina {
 
     protected String nome;
     protected boolean ativa;
-    protected int creditos;
+    protected static int creditos;
     protected static final int maxAluno = 60;
     protected static final int minAluno = 3;
     protected List<Aluno> alunosMatriculados;
     private Professor professor;
 
-    public Disciplina(String nome, int creditos, Professor professor, List<Aluno> alunosMatriculados) {
+    public Disciplina(String nome, int creditos, Professor professor) {
         this.nome = nome;
         this.creditos = creditos;
         this.professor = professor;
@@ -52,7 +52,7 @@ class Disciplina {
         return ativa;
     }
 
-    public int getCreditos() {
+    public static int getCreditos() {
         return creditos;
     }
 
