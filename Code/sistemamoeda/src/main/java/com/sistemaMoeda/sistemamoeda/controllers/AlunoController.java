@@ -1,4 +1,4 @@
-package sistemamoeda.src.main.java.com.sistemaMoeda.sistemamoeda.controllers;
+package com.sistemaMoeda.sistemamoeda.controllers;
 
 public class AlunoController {
 }
