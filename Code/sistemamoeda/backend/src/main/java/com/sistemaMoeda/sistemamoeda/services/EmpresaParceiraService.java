@@ -28,14 +28,12 @@ public class EmpresaParceiraService {
     public EmpresaParceira updateEmpresa(String id, EmpresaParceira empresaAtualizada) {
 
         EmpresaParceira empresaExistente = empresaParceiraRepository.findById(id).orElse(null);
-        if (empresaExistente == null) {
-            return null;
+        if (empresaExistente != null) {
+            empresaAtualizada.setId(id);
+            return empresaParceiraRepository.save(empresaAtualizada);
         }
-
-        empresaAtualizada.setId(id);
-        return empresaParceiraRepository.save(empresaAtualizada);
+        return null;
     }
-
 
     public void deletarEmpresa(String id) {
         empresaParceiraRepository.deleteById(id);

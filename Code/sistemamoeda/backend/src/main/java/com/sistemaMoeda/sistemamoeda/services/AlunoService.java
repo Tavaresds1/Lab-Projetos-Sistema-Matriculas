@@ -49,6 +49,14 @@ public class AlunoService {
         alunoRepository.deleteById(id);
     }
 
+    public List<Aluno> buscarPorInstituicaoEnsino(String instituicaoEnsino) {
+        return alunoRepository.findByInstituicaoEnsino(instituicaoEnsino);
+    }
+
+    public List<Aluno> buscarPorCurso(String curso) {
+        return alunoRepository.findByCurso(curso);
+    }
+
     public List<Transacao> consultarExtrato(String alunoId) {
         Aluno aluno = alunoRepository.findById(alunoId).orElse(null);
         return aluno != null ? transacaoRepository.findByAlunoId(alunoId) : null;

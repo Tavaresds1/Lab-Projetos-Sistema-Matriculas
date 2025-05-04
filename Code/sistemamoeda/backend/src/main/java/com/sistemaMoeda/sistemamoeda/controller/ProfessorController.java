@@ -17,8 +17,12 @@ public class ProfessorController {
     private ProfessorService professorService;
 
     @PostMapping("/criar")
-    public Professor criarProfessor(@RequestBody Professor professor) {
-        return professorService.criarProfessor(professor);
+    public ResponseEntity<Professor> criarProfessor(@RequestBody Professor professor) {
+        if (professor.getNome() == null || professor.getCpf() == null || professor.getDepartamento() == null || professor.getInstituicao() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        Professor novoProfessor = professorService.criarProfessor(professor);
+        return ResponseEntity.ok(novoProfessor);
     }
 
     @GetMapping("/buscarId/{id}")

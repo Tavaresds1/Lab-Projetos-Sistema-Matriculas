@@ -16,6 +16,7 @@ public class Professor extends Usuario {
     private String nome;
     private String cpf;
     private String departamento;
+    private String instituicao;
     private int saldo;
 
     @DBRef

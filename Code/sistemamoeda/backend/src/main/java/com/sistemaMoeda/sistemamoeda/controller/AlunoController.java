@@ -18,8 +18,14 @@ public class AlunoController {
     private AlunoService alunoService;
 
     @PostMapping("/criar")
-    public Aluno criarAluno(@RequestBody Aluno aluno) {
-        return alunoService.criarAluno(aluno);
+    public ResponseEntity<Aluno> criarAluno(@RequestBody Aluno aluno) {
+        if (aluno.getNome() == null || aluno.getEmail() == null || aluno.getCpf() == null ||
+                aluno.getRg() == null || aluno.getEndereco() == null ||
+                aluno.getInstituicaoEnsino() == null || aluno.getCurso() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        Aluno novoAluno = alunoService.criarAluno(aluno);
+        return ResponseEntity.ok(novoAluno);
     }
 
     @GetMapping("/buscarId/{id}")
@@ -44,7 +50,6 @@ public class AlunoController {
         Aluno alunoAtualizado = alunoService.updateAluno(id, aluno);
         return alunoAtualizado != null ? ResponseEntity.ok(alunoAtualizado) : ResponseEntity.notFound().build();
     }
-
 
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletarAluno(@PathVariable String id) {

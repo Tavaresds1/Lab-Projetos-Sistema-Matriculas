@@ -16,8 +16,12 @@ public class EmpresaParceiraController {
     private EmpresaParceiraService empresaParceiraService;
 
     @PostMapping("/criar")
-    public EmpresaParceira criarEmpresa(@RequestBody EmpresaParceira empresa) {
-        return empresaParceiraService.criarEmpresa(empresa);
+    public ResponseEntity<Empresa> criarEmpresa(@RequestBody Empresa empresa) {
+        if (empresa.getNome() == null || empresa.getVantagens() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        Empresa novaEmpresa = empresaService.criarEmpresa(empresa);
+        return ResponseEntity.ok(novaEmpresa);
     }
 
     @GetMapping("/buscarId/{id}")

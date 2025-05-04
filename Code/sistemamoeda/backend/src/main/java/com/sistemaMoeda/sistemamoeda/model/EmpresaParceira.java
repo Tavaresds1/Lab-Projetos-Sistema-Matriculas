@@ -10,6 +10,8 @@ public class EmpresaParceira {
     @Id
     private String id;
     private String nome;
+    private List<Vantagem> vantagens;
+    private String descricao;
 
     public void cadastrarVantagem(Vantagem vantagem) {
         // Implementação do cadastro de vantagem

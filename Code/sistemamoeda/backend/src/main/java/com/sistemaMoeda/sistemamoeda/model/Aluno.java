@@ -14,10 +14,11 @@ public class Aluno extends Usuario {
     @Id
     private String id;
     private String nome;
+    private String email;
     private String cpf;
-    private String departamento;
-    private String rq;
-    private String endereco;
+    private String rg; 
+    private String endereco; 
+    private String instituicaoEnsino; 
     private String curso;
     private int saldo;
 

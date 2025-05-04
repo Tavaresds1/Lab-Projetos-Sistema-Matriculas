@@ -25,6 +25,10 @@ public class VantagemService {
         return vantagemRepository.findAll();
     }
 
+    public List<Vantagem> listarPorEmpresaParceira(String empresaId) {
+        return vantagemRepository.findByEmpresaParceiraId(empresaId);
+    }
+
     public List<Vantagem> listarPorCustoMaximo(int custoMaximo) {
         return vantagemRepository.findByCustoLessThanEqual(custoMaximo);
     }

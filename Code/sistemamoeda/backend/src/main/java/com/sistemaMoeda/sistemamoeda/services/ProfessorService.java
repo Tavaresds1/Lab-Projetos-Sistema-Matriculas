@@ -43,13 +43,11 @@ public class ProfessorService {
     public Professor updateProfessor(String id, Professor professor){
 
         Professor professorExistente = professorRepository.findById(id).orElse(null);
-        if(professorExistente == null){
-            return  null;
+        if (professorExistente != null) {
+            professor.setId(id);
+            return professorRepository.save(professor);
         }
-
-        professor.setId(id);
-        return professorRepository.save(professor);
-
+        return null;
     }
 
     public void deletarProfessor(String id) {
