@@ -1,7 +1,9 @@
-package com.sistemaMoeda.sistemamoeda.repository;
+package main.java.com.sistemaMoeda.sistemamoeda.repository;
 
-import com.sistemaMoeda.sistemamoeda.model.Aluno;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Aluno;
 import org.springframework.data.mongodb.repository.MongoRepository;
+
+import java.util.List;
 
 public interface AlunoRepository extends MongoRepository<Aluno, String> {
     Aluno findByCpf(String cpf);

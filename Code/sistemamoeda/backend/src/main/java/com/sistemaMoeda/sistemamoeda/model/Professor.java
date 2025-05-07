@@ -1,5 +1,6 @@
-package com.sistemaMoeda.sistemamoeda.model;
+package main.java.com.sistemaMoeda.sistemamoeda.model;
 
+import main.java.com.sistemaMoeda.sistemamoeda.model.Transacao;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;

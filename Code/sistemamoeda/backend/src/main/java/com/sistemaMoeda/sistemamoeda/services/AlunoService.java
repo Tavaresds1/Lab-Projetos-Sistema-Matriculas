@@ -1,10 +1,11 @@
-package com.sistemaMoeda.sistemamoeda.services;
+package main.java.com.sistemaMoeda.sistemamoeda.services;
 
-import com.sistemaMoeda.sistemamoeda.model.Aluno;
-import com.sistemaMoeda.sistemamoeda.model.Transacao;
-import com.sistemaMoeda.sistemamoeda.model.Vantagem;
-import com.sistemaMoeda.sistemamoeda.repository.AlunoRepository;
-import com.sistemaMoeda.sistemamoeda.repository.TransacaoRepository;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Aluno;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Transacao;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Vantagem;
+import main.java.com.sistemaMoeda.sistemamoeda.repository.AlunoRepository;
+import main.java.com.sistemaMoeda.sistemamoeda.repository.VantagemRepository;
+import main.java.com.sistemaMoeda.sistemamoeda.repository.TransacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ public class AlunoService {
 
     @Autowired
     private AlunoRepository alunoRepository;
+
+    @Autowired
+    private VantagemRepository vantagemRepository;
 
     @Autowired
     private TransacaoRepository transacaoRepository;
@@ -62,9 +66,15 @@ public class AlunoService {
         return aluno != null ? transacaoRepository.findByAlunoId(alunoId) : null;
     }
 
-    public void resgatarVantagem(String alunoId, Vantagem vantagem) {
+    public void resgatarVantagem(String alunoId, String idVantagem) {
         Aluno aluno = alunoRepository.findById(alunoId).orElse(null);
-        if (aluno != null && aluno.getSaldo() >= vantagem.getCusto()) {
+        Vantagem vantagem = vantagemRepository.findById(idVantagem).orElse(null);
+
+        if (aluno == null || vantagem == null) {
+            throw new RuntimeException("Aluno ou vantagem não encontrados!");
+        }
+
+        if (aluno.getSaldo() >= vantagem.getCusto()) {
             aluno.setSaldo(aluno.getSaldo() - vantagem.getCusto());
             alunoRepository.save(aluno);
 
@@ -75,6 +85,8 @@ public class AlunoService {
             transacao.setMensagem("Resgate: " + vantagem.getDescricao());
             transacao.setAlunoId(alunoId);
             transacaoRepository.save(transacao);
+        } else {
+            throw new RuntimeException("Saldo insuficiente para resgatar a vantagem!");
         }
     }
 }

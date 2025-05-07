@@ -1,7 +1,7 @@
-package com.sistemaMoeda.sistemamoeda.repository;
+package main.java.com.sistemaMoeda.sistemamoeda.repository;
 
 
-import com.sistemaMoeda.sistemamoeda.model.Transacao;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Transacao;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

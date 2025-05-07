@@ -1,7 +1,7 @@
-package com.sistemaMoeda.sistemamoeda.controller;
+package main.java.com.sistemaMoeda.sistemamoeda.controller;
 
-import com.sistemaMoeda.sistemamoeda.model.EmpresaParceira;
-import com.sistemaMoeda.sistemamoeda.services.EmpresaParceiraService;
+import main.java.com.sistemaMoeda.sistemamoeda.model.EmpresaParceira;
+import main.java.com.sistemaMoeda.sistemamoeda.services.EmpresaParceiraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +16,11 @@ public class EmpresaParceiraController {
     private EmpresaParceiraService empresaParceiraService;
 
     @PostMapping("/criar")
-    public ResponseEntity<Empresa> criarEmpresa(@RequestBody Empresa empresa) {
+    public ResponseEntity<EmpresaParceira> criarEmpresa(@RequestBody EmpresaParceira empresa) {
         if (empresa.getNome() == null || empresa.getVantagens() == null) {
             return ResponseEntity.badRequest().build();
         }
-        Empresa novaEmpresa = empresaService.criarEmpresa(empresa);
+        EmpresaParceira novaEmpresa = empresaParceiraService.criarEmpresa(empresa);
         return ResponseEntity.ok(novaEmpresa);
     }
 

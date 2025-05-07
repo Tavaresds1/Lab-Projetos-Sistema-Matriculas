@@ -1,7 +1,7 @@
-package com.sistemaMoeda.sistemamoeda.services;
+package main.java.com.sistemaMoeda.sistemamoeda.services;
 
-import com.sistemaMoeda.sistemamoeda.model.Vantagem;
-import com.sistemaMoeda.sistemamoeda.repository.VantagemRepository;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Vantagem;
+import main.java.com.sistemaMoeda.sistemamoeda.repository.VantagemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

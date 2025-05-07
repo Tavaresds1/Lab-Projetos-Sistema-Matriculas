@@ -1,9 +1,9 @@
-package com.sistemaMoeda.sistemamoeda.controller;
+package main.java.com.sistemaMoeda.sistemamoeda.controller;
 
-import com.sistemaMoeda.sistemamoeda.model.Aluno;
-import com.sistemaMoeda.sistemamoeda.model.Transacao;
-import com.sistemaMoeda.sistemamoeda.model.Vantagem;
-import com.sistemaMoeda.sistemamoeda.services.AlunoService;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Aluno;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Transacao;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Vantagem;
+import main.java.com.sistemaMoeda.sistemamoeda.services.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,9 +63,12 @@ public class AlunoController {
         return extrato != null ? ResponseEntity.ok(extrato) : ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/resgatarVantagem/{id}")
-    public ResponseEntity<Void> resgatarVantagem(@PathVariable String id, @RequestBody Vantagem vantagem) {
-        alunoService.resgatarVantagem(id, vantagem);
-        return ResponseEntity.ok().build();
+    @PostMapping("/resgatarVantagem/{alunoId}/{idVantagem}")
+    public ResponseEntity<String> resgatarVantagem(
+            @PathVariable String alunoId,
+            @PathVariable String idVantagem
+    ) {
+        alunoService.resgatarVantagem(alunoId, idVantagem);
+        return ResponseEntity.ok("Vantagem resgatada com sucesso!");
     }
 }

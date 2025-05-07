@@ -1,9 +1,9 @@
-package com.sistemaMoeda.sistemamoeda.controller;
+package main.java.com.sistemaMoeda.sistemamoeda.controller;
 
-import com.sistemaMoeda.sistemamoeda.model.Aluno;
-import com.sistemaMoeda.sistemamoeda.model.Professor;
-import com.sistemaMoeda.sistemamoeda.model.Instituicao;
-import com.sistemaMoeda.sistemamoeda.services.InstituicaoService;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Aluno;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Professor;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Instituicao;
+import main.java.com.sistemaMoeda.sistemamoeda.services.InstituicaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,8 +1,8 @@
-package com.sistemaMoeda.sistemamoeda.controller;
+package main.java.com.sistemaMoeda.sistemamoeda.controller;
 
-import com.sistemaMoeda.sistemamoeda.model.Professor;
-import com.sistemaMoeda.sistemamoeda.model.Transacao;
-import com.sistemaMoeda.sistemamoeda.services.ProfessorService;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Professor;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Transacao;
+import main.java.com.sistemaMoeda.sistemamoeda.services.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,13 +61,14 @@ public class ProfessorController {
     }
 
     @PostMapping("/enviarMoeda/{professorId}/{alunoId}")
-    public ResponseEntity<Void> enviarIMoeda(
+    public ResponseEntity<String> enviarIMoeda(
             @PathVariable String professorId,
             @PathVariable String alunoId,
             @RequestParam int valor,
             @RequestParam String mensagem) {
 
         professorService.enviarIMoeda(professorId, alunoId, valor, mensagem);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Moedas enviadas com sucesso!");
     }
+
 }

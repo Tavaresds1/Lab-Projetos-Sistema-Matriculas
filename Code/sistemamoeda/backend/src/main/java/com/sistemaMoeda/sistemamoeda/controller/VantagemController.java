@@ -1,7 +1,7 @@
-package com.sistemaMoeda.sistemamoeda.controller;
+package main.java.com.sistemaMoeda.sistemamoeda.controller;
 
-import com.sistemaMoeda.sistemamoeda.model.Vantagem;
-import com.sistemaMoeda.sistemamoeda.services.VantagemService;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Vantagem;
+import main.java.com.sistemaMoeda.sistemamoeda.services.VantagemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

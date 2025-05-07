@@ -1,11 +1,11 @@
-package com.sistemaMoeda.sistemamoeda.services;
+package main.java.com.sistemaMoeda.sistemamoeda.services;
 
-import com.sistemaMoeda.sistemamoeda.model.Aluno;
-import com.sistemaMoeda.sistemamoeda.model.Instituicao;
-import com.sistemaMoeda.sistemamoeda.model.Professor;
-import com.sistemaMoeda.sistemamoeda.repository.AlunoRepository;
-import com.sistemaMoeda.sistemamoeda.repository.InstituicaoRepository;
-import com.sistemaMoeda.sistemamoeda.repository.ProfessorRepository;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Aluno;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Instituicao;
+import main.java.com.sistemaMoeda.sistemamoeda.model.Professor;
+import main.java.com.sistemaMoeda.sistemamoeda.repository.AlunoRepository;
+import main.java.com.sistemaMoeda.sistemamoeda.repository.InstituicaoRepository;
+import main.java.com.sistemaMoeda.sistemamoeda.repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

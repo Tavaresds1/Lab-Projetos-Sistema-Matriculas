@@ -1,4 +1,4 @@
-package com.sistemaMoeda.sistemamoeda.model;
+package main.java.com.sistemaMoeda.sistemamoeda.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
