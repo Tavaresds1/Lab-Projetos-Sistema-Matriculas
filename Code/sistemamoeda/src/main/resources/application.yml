@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: sistemamoeda
+  data:
+    mongodb:
+      uri: mongodb+srv://adminsistema:sistema123@sistemamoedadb.kqyfvco.mongodb.net/sistemadb?retryWrites=true&w=majority&appName=sistemamoedaDb
+
+server:
+  port: 9090
