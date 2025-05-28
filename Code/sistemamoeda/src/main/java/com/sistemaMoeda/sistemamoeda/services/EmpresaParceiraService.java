@@ -2,39 +2,50 @@ package com.sistemaMoeda.sistemamoeda.services;
 
 import com.sistemaMoeda.sistemamoeda.model.EmpresaParceira;
 import com.sistemaMoeda.sistemamoeda.repository.EmpresaParceiraRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmpresaParceiraService {
 
-    @Autowired
-    private EmpresaParceiraRepository empresaParceiraRepository;
+    private final EmpresaParceiraRepository empresaParceiraRepository;
 
+    public EmpresaParceiraService(EmpresaParceiraRepository empresaParceiraRepository) {
+        this.empresaParceiraRepository = empresaParceiraRepository;
+    }
+
+    public boolean existeEmpresa(String empresaId) {
+        return empresaParceiraRepository.existsById(empresaId);
+    }
+
+    @Transactional
     public EmpresaParceira criarEmpresa(EmpresaParceira empresa) {
         return empresaParceiraRepository.save(empresa);
     }
 
-    public EmpresaParceira buscarPorId(String id) {
-        return empresaParceiraRepository.findById(id).orElse(null);
+    @Transactional(readOnly = true)
+    public Optional<EmpresaParceira> buscarPorId(String id) {
+        return empresaParceiraRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<EmpresaParceira> listarTodas() {
         return empresaParceiraRepository.findAll();
     }
 
-    public EmpresaParceira updateEmpresa(String id, EmpresaParceira empresaAtualizada) {
-
-        EmpresaParceira empresaExistente = empresaParceiraRepository.findById(id).orElse(null);
-        if (empresaExistente != null) {
-            empresaAtualizada.setId(id);
-            return empresaParceiraRepository.save(empresaAtualizada);
+    @Transactional
+    public EmpresaParceira atualizarEmpresa(String id, EmpresaParceira empresa) {
+        if (!empresaParceiraRepository.existsById(id)) {
+            return null;
         }
-        return null;
+        empresa.setId(id);
+        return empresaParceiraRepository.save(empresa);
     }
 
+    @Transactional
     public void deletarEmpresa(String id) {
         empresaParceiraRepository.deleteById(id);
     }
