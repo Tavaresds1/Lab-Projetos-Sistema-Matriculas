@@ -1,14 +1,17 @@
 package com.sistemaMoeda.sistemamoeda.controller;
 
+import com.sistemaMoeda.sistemamoeda.dto.AlunoDTO;
 import com.sistemaMoeda.sistemamoeda.model.Aluno;
 import com.sistemaMoeda.sistemamoeda.model.Transacao;
-import com.sistemaMoeda.sistemamoeda.model.Vantagem;
 import com.sistemaMoeda.sistemamoeda.services.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/aluno")
@@ -18,12 +21,17 @@ public class AlunoController {
     private AlunoService alunoService;
 
     @PostMapping("/criar")
-    public ResponseEntity<Aluno> criarAluno(@RequestBody Aluno aluno) {
-        if (aluno.getNome() == null || aluno.getEmail() == null || aluno.getCpf() == null ||
-                aluno.getRg() == null || aluno.getEndereco() == null ||
-                aluno.getInstituicaoEnsino() == null || aluno.getCurso() == null) {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<?> criarAluno(@RequestBody @Valid AlunoDTO alunoDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(
+                    result.getAllErrors()
+                            .stream()
+                            .map(e -> e.getDefaultMessage())
+                            .collect(Collectors.toList())
+            );
         }
+
+        Aluno aluno = convertToEntity(alunoDTO);
         Aluno novoAluno = alunoService.criarAluno(aluno);
         return ResponseEntity.ok(novoAluno);
     }
@@ -46,7 +54,16 @@ public class AlunoController {
     }
 
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<Aluno> updateAluno(@PathVariable String id, @RequestBody Aluno aluno) {
+    public ResponseEntity<?> updateAluno(@PathVariable String id, @RequestBody @Valid AlunoDTO alunoDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(
+                    result.getAllErrors()
+                            .stream()
+                            .map(e -> e.getDefaultMessage())
+                            .collect(Collectors.toList())
+            );
+        }
+        Aluno aluno = convertToEntity(alunoDTO);
         Aluno alunoAtualizado = alunoService.updateAluno(id, aluno);
         return alunoAtualizado != null ? ResponseEntity.ok(alunoAtualizado) : ResponseEntity.notFound().build();
     }
@@ -70,5 +87,23 @@ public class AlunoController {
     ) {
         alunoService.resgatarVantagem(alunoId, idVantagem);
         return ResponseEntity.ok("Vantagem resgatada com sucesso!");
+    }
+
+    private Aluno convertToEntity(AlunoDTO dto) {
+        Aluno aluno = new Aluno();
+
+        aluno.setLogin(dto.getLogin());
+        aluno.setSenha(dto.getSenha());
+        aluno.setCpf(dto.getCpf());
+
+
+        aluno.setNome(dto.getNome());
+        aluno.setEmail(dto.getEmail());
+        aluno.setRg(dto.getRg());
+        aluno.setEndereco(dto.getEndereco());
+        aluno.setInstituicaoEnsino(dto.getInstituicaoEnsino());
+        aluno.setCurso(dto.getCurso());
+        aluno.setSaldo(0);
+        return aluno;
     }
 }

@@ -28,11 +28,11 @@ public class Aluno extends Usuario {
 
     @Override
     public void autenticar() {
-        // Implementação da autenticação
+
     }
 
     public void usarVantagem(Vantagem vantagem) {
-        // Implementação do uso de vantagem
+
     }
 
 
