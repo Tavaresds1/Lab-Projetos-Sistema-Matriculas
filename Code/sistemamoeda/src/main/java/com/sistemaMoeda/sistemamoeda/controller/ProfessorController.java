@@ -1,13 +1,17 @@
 package com.sistemaMoeda.sistemamoeda.controller;
 
+import com.sistemaMoeda.sistemamoeda.dto.ProfessorDTO;
 import com.sistemaMoeda.sistemamoeda.model.Professor;
 import com.sistemaMoeda.sistemamoeda.model.Transacao;
 import com.sistemaMoeda.sistemamoeda.services.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/professor")
@@ -17,10 +21,16 @@ public class ProfessorController {
     private ProfessorService professorService;
 
     @PostMapping("/criar")
-    public ResponseEntity<Professor> criarProfessor(@RequestBody Professor professor) {
-        if (professor.getNome() == null || professor.getCpf() == null || professor.getDepartamento() == null || professor.getInstituicao() == null) {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<?> criarProfessor(@RequestBody @Valid ProfessorDTO professorDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(
+                    result.getAllErrors()
+                            .stream()
+                            .map(e -> e.getDefaultMessage())
+                            .collect(Collectors.toList())
+            );
         }
+        Professor professor = convertToEntity(professorDTO);
         Professor novoProfessor = professorService.criarProfessor(professor);
         return ResponseEntity.ok(novoProfessor);
     }
@@ -43,7 +53,16 @@ public class ProfessorController {
     }
 
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<Professor> updateProfessor(@PathVariable String id, @RequestBody Professor professor) {
+    public ResponseEntity<?> updateProfessor(@PathVariable String id, @RequestBody @Valid ProfessorDTO professorDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(
+                    result.getAllErrors()
+                            .stream()
+                            .map(e -> e.getDefaultMessage())
+                            .collect(Collectors.toList())
+            );
+        }
+        Professor professor = convertToEntity(professorDTO);
         Professor professorAtualizado = professorService.updateProfessor(id, professor);
         return professorAtualizado != null ? ResponseEntity.ok(professorAtualizado) : ResponseEntity.notFound().build();
     }
@@ -71,4 +90,19 @@ public class ProfessorController {
         return ResponseEntity.ok("Moedas enviadas com sucesso!");
     }
 
+    private Professor convertToEntity(ProfessorDTO dto) {
+        Professor professor = new Professor();
+
+        professor.setLogin(dto.getLogin());
+        professor.setSenha(dto.getSenha());
+        professor.setCpf(dto.getCpf());
+
+
+        professor.setNome(dto.getNome());
+        professor.setDepartamento(dto.getDepartamento());
+        professor.setInstituicao(dto.getInstituicao());
+
+        professor.setSaldo(0);
+        return professor;
+    }
 }
