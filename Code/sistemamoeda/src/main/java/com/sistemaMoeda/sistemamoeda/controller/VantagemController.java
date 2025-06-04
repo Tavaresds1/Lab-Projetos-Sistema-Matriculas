@@ -71,7 +71,7 @@ public class VantagemController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping
+    @GetMapping("/listarTodas")
     public ResponseEntity<List<Vantagem>> listarTodas() {
         return ResponseEntity.ok(vantagemService.listarTodas());
     }
@@ -86,7 +86,7 @@ public class VantagemController {
         return ResponseEntity.ok(vantagemService.listarPorCustoMaximo(custoMaximo));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deletarVantagem(@PathVariable String id) {
         vantagemService.deletarVantagem(id);
         return ResponseEntity.noContent().build();

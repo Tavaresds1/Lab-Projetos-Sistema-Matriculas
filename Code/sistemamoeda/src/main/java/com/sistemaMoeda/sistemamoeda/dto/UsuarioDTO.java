@@ -1,12 +1,14 @@
 package com.sistemaMoeda.sistemamoeda.dto;
 
 import com.sistemaMoeda.sistemamoeda.validation.CPF;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class UsuarioDTO {
 
-    @NotBlank(message = "Usuário é obrigatório")
-    private String login;
+    @NotBlank(message = "Email é obrigatório")
+    @Email(message = "Email deve ser válido")
+    private String email;
 
     @NotBlank(message = "Senha é obrigatória")
     private String senha;
@@ -14,11 +16,11 @@ public class UsuarioDTO {
     @CPF
     private String cpf;
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
     public String getSenha() {
         return senha;

@@ -31,4 +31,8 @@ public class Professor extends Usuario {
     public void enviaIMoeda(Aluno aluno, int moeda, String mensagem) {
         // Implementação do envio de IMoeda
     }
+
+    public void setEmail(String email) {
+
+    }
 }

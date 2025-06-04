@@ -18,7 +18,7 @@ public class Transacao {
     private String professorId;
     private Date data;
     private String tipo;
-    private int valor;
+    private double valor;
     private String mensagem;
     private String codigoConfirmacao;
 }

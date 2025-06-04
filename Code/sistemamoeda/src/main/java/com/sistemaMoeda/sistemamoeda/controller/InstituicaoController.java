@@ -62,7 +62,7 @@ public class InstituicaoController {
 
     private Professor convertProfessorDTOToEntity(ProfessorDTO dto) {
         Professor professor = new Professor();
-        professor.setLogin(dto.getLogin());
+        professor.setEmail(dto.getEmail());
         professor.setSenha(dto.getSenha());
         professor.setCpf(dto.getCpf());
         professor.setNome(dto.getNome());

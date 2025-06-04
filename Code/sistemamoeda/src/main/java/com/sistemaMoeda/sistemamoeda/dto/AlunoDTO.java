@@ -10,13 +10,6 @@ public class AlunoDTO extends UsuarioDTO {
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
-    @NotBlank(message = "Email é obrigatório")
-    @Email(message = "Email deve ser válido")
-    private String email;
-
-    @NotBlank(message = "RG é obrigatório")
-    private String rg;
-
     @NotBlank(message = "Endereço é obrigatório")
     private String endereco;
 
@@ -35,21 +28,6 @@ public class AlunoDTO extends UsuarioDTO {
         this.nome = nome;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getRg() {
-        return rg;
-    }
-
-    public void setRg(String rg) {
-        this.rg = rg;
-    }
 
     public String getEndereco() {
         return endereco;

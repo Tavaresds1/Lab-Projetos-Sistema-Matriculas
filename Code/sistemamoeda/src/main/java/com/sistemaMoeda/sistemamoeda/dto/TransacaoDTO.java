@@ -19,8 +19,8 @@ public class TransacaoDTO {
     private String tipo;
 
     @NotNull(message = "Valor não pode ser nulo")
-    @Positive(message = "Valor deve ser positivo")
-    private Integer valor;
+    @Positive(message = "Rodrigo")
+    private Double valor;
 
     private String mensagem;
     private String codigoConfirmacao;
@@ -58,11 +58,11 @@ public class TransacaoDTO {
         this.tipo = tipo;
     }
 
-    public Integer getValor() {
+    public @NotNull(message = "Valor não pode ser nulo") @Positive(message = "Valor deve ser positivo") Double getValor() {
         return valor;
     }
 
-    public void setValor(Integer valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 

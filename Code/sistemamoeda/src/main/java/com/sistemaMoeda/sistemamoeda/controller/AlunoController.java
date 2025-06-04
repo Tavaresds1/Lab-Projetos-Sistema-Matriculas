@@ -92,18 +92,16 @@ public class AlunoController {
     private Aluno convertToEntity(AlunoDTO dto) {
         Aluno aluno = new Aluno();
 
-        aluno.setLogin(dto.getLogin());
+        aluno.setEmail(dto.getEmail());
         aluno.setSenha(dto.getSenha());
         aluno.setCpf(dto.getCpf());
 
 
         aluno.setNome(dto.getNome());
-        aluno.setEmail(dto.getEmail());
-        aluno.setRg(dto.getRg());
         aluno.setEndereco(dto.getEndereco());
         aluno.setInstituicaoEnsino(dto.getInstituicaoEnsino());
         aluno.setCurso(dto.getCurso());
-        aluno.setSaldo(0);
+        aluno.setSaldo(100);
         return aluno;
     }
 }

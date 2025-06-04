@@ -1,6 +1,7 @@
 package com.sistemaMoeda.sistemamoeda.controller;
 
 import com.sistemaMoeda.sistemamoeda.dto.TransacaoDTO;
+import com.sistemaMoeda.sistemamoeda.model.Aluno;
 import com.sistemaMoeda.sistemamoeda.model.Transacao;
 import com.sistemaMoeda.sistemamoeda.services.TransacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +56,13 @@ public class TransacaoController {
     }
 
     @GetMapping("/listarTodas")
-    public ResponseEntity<List<Transacao>> listarTodas() {
-        List<Transacao> transacoes = transacaoService.listarTodas();
-        return ResponseEntity.ok(transacoes);
+    public List<Transacao> listarTodas() {
+        return transacaoService.listarTodas();
+    }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<Void> deletarTrasacao(@PathVariable String id) {
+        transacaoService.deletarTransacao(id);
+        return ResponseEntity.noContent().build();
     }
 }

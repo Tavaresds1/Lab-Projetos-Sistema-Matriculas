@@ -39,7 +39,7 @@ public class EmpresaParceiraController {
         return ResponseEntity.ok(novaEmpresa);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<?> atualizarEmpresa(@PathVariable String id,
                                               @RequestBody @Valid EmpresaParceiraDTO empresaDTO,
                                               BindingResult result) {
@@ -67,12 +67,12 @@ public class EmpresaParceiraController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping
+    @GetMapping("/listarTodas")
     public ResponseEntity<List<EmpresaParceira>> listarTodas() {
         return ResponseEntity.ok(empresaParceiraService.listarTodas());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletarEmpresa(@PathVariable String id) {
         empresaParceiraService.deletarEmpresa(id);
         return ResponseEntity.noContent().build();

@@ -19,7 +19,7 @@ public class LoginController {
                 .map(e -> e.getDefaultMessage())
                 .toList();
         }
-        if (usuarioDTO.getLogin() == null || usuarioDTO.getSenha() == null) {
+        if (usuarioDTO.getEmail() == null || usuarioDTO.getSenha() == null) {
             return "Login ou senha inválidos!";
         }
 

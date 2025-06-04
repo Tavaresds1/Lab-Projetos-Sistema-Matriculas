@@ -25,6 +25,8 @@ public class TransacaoService {
         return transacaoRepository.findByProfessorId(professorId);
     }
 
+    public void deletarTransacao(String id) {transacaoRepository.deleteById(id);}
+
     public List<Transacao> listarTodas() {
         return transacaoRepository.findAll();
     }
