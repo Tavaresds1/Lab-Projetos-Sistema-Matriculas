@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Nova Vantagem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Estilo para o spinner de carregamento */
+        .loader {
+            border: 4px solid #f3f3f3;
+            /* Light grey */
+            border-top: 4px solid #3498db;
+            /* Blue */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-slate-800 shadow-2xl rounded-xl p-6 md:p-10 w-full max-w-lg border border-slate-700">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-sky-400">Criar Nova Vantagem</h1>
+            <p class="text-slate-400 mt-2">Preencha os dados abaixo para registrar uma nova vantagem.</p>
+        </div>
+
+        <form id="criarVantagemForm" class="space-y-6">
+            <div>
+                <label for="descricao" class="block text-sm font-medium text-slate-300 mb-1">Descrição</label>
+                <input type="text" id="descricao" name="descricao" required class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200" placeholder="Descrição da vantagem">
+            </div>
+
+            <div>
+                <label for="foto" class="block text-sm font-medium text-slate-300 mb-1">Foto (URL)</label>
+                <input type="url" id="foto" name="foto" class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200" placeholder="https://exemplo.com/imagem.png">
+            </div>
+
+            <div>
+                <label for="custo" class="block text-sm font-medium text-slate-300 mb-1">Custo (em moedas)</label>
+                <input type="number" id="custo" name="custo" class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200" placeholder="Custo da vantagem">
+            </div>
+
+            <div>
+                <label for="empresaParceiraId" class="block text-sm font-medium text-slate-300 mb-1">ID da Empresa Parceira</label>
+                <input type="text" id="empresaParceiraId" name="empresaParceiraId" class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200" placeholder="ID da empresa parceira">
+            </div>
+
+
+            <div>
+                <button type="submit" id="submitButton" class="w-full flex items-center justify-center bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75 shadow-lg">
+                    <span id="buttonText">Criar Vantagem</span>
+                    <div id="loadingSpinner" class="loader hidden"></div>
+                </button>
+            </div>
+        </form>
+
+        <div id="responseMessage" class="mt-6 text-center text-sm">
+            <!-- Mensagens de sucesso ou erro serão exibidas aqui -->
+        </div>
+
+    </div>
+
+    <script>
+        // Elementos do DOM
+        const form = document.getElementById('criarVantagemForm');
+        const responseMessageDiv = document.getElementById('responseMessage');
+        const submitButton = document.getElementById('submitButton');
+        const buttonText = document.getElementById('buttonText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        // Script para lidar com o envio do formulário
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault(); // Previne o envio padrão do formulário
+
+            // Coleta os dados do formulário
+            const descricao = document.getElementById('descricao').value;
+            const foto = document.getElementById('foto').value;
+            const custoValue = document.getElementById('custo').value;
+            const empresaParceiraIdValue = document.getElementById('empresaParceiraId').value; // Alterado para empresaParceiraIdValue
+
+            // Validação básica no frontend (feedback rápido)
+            if (!descricao || !custoValue || !empresaParceiraIdValue) { // Adicionada validação para empresaParceiraIdValue
+                showMessage('Descrição, Custo e ID da Empresa Parceira são campos obrigatórios.', 'error');
+                return;
+            }
+            const custoInt = parseInt(custoValue);
+            if (isNaN(custoInt) || custoInt < 0) {
+                showMessage('O custo deve ser um número igual ou maior que zero.', 'error');
+                return;
+            }
+
+            // Mostra o spinner e desabilita o botão
+            buttonText.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+            submitButton.disabled = true;
+            responseMessageDiv.innerHTML = ''; // Limpa mensagens anteriores
+
+            // Cria o payload (VantagemDTO)
+            // Assumindo que o backend espera um objeto EmpresaParceira que pode ser identificado por um 'id'.
+            // Se a estrutura do objeto EmpresaParceira for diferente no seu backend ao receber o DTO,
+            // você precisará ajustar a estrutura de 'empresaParceira' abaixo.
+            const vantagemPayload = {
+                descricao: descricao,
+                foto: foto || null, // Envia null se a string da foto estiver vazia
+                custo: custoInt,
+                empresaParceira: {
+                    id: empresaParceiraIdValue // Assumindo que a string é o ID da EmpresaParceira
+                    // Se a classe EmpresaParceira tiver outros campos obrigatórios que precisam vir do frontend,
+                    // o formulário e este payload precisariam ser mais complexos.
+                }
+            };
+
+            const baseUrl = 'http://localhost:9090'; // URL base da sua API
+            const apiUrl = `${baseUrl}/vantagem/criar`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(vantagemPayload) // Envia o objeto como JSON
+                });
+
+                if (response.ok) {
+                    const novaVantagem = await response.json(); // O backend retorna a vantagem criada
+                    showMessage(`Vantagem "${novaVantagem.descricao || 'sem descrição'}" criada com sucesso! ID: ${novaVantagem.id || 'N/A'}`, 'success');
+                    form.reset(); // Limpa o formulário após o sucesso
+                } else {
+                    // Trata erros, incluindo erros de validação do DTO
+                    let errorMessage = `Erro ao criar vantagem. Status: ${response.status}`;
+                    try {
+                        const errorData = await response.json(); // Tenta parsear como JSON
+                        if (Array.isArray(errorData) && errorData.length > 0) {
+                            // Se for uma lista de mensagens de erro (comum com BindingResult)
+                            errorMessage = errorData.join('<br>');
+                        } else if (typeof errorData === 'string') {
+                            errorMessage = errorData;
+                        } else if (errorData && errorData.message) {
+                            errorMessage = errorData.message;
+                        } else if (errorData && errorData.error) { // Comum para erros Spring
+                            errorMessage = `${errorData.error}: ${errorData.message || ''}`;
+                        }
+                        else {
+                            const textError = await response.text(); // Fallback para texto puro
+                            if (textError) errorMessage = textError;
+                        }
+                    } catch (e) {
+                        // Se o corpo do erro não for JSON, tenta ler como texto
+                        const textError = await response.text();
+                        if (textError) errorMessage = textError;
+                        console.warn("Não foi possível parsear a resposta de erro como JSON ou texto.", e);
+                    }
+                    showMessage(errorMessage, 'error');
+                }
+            } catch (error) {
+                // Erro de rede ou outro erro na requisição
+                console.error('Erro na requisição:', error);
+                showMessage(`Não foi possível conectar ao servidor. Verifique sua conexão e se o backend está rodando em ${baseUrl}.`, 'error');
+            } finally {
+                // Esconde o spinner e reabilita o botão
+                buttonText.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden');
+                submitButton.disabled = false;
+            }
+        });
+
+        // Função para exibir mensagens
+        function showMessage(message, type) {
+            responseMessageDiv.innerHTML = ''; // Limpa mensagens anteriores
+            const messageElement = document.createElement('p');
+            messageElement.innerHTML = message; // Permite HTML nas mensagens (ex: <br>)
+            if (type === 'success') {
+                messageElement.className = 'text-green-400 bg-green-900/30 p-3 rounded-md border border-green-700';
+            } else if (type === 'error') {
+                messageElement.className = 'text-red-400 bg-red-900/30 p-3 rounded-md border border-red-700';
+            } else {
+                messageElement.className = 'text-slate-400';
+            }
+            responseMessageDiv.appendChild(messageElement);
+
+            // Remove a mensagem após alguns segundos
+            setTimeout(() => {
+                if (responseMessageDiv.contains(messageElement)) {
+                    responseMessageDiv.removeChild(messageElement);
+                }
+            }, 7000);
+        }
+    </script>
+</body>
+
+</html>

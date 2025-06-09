@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dashboard do Professor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Sistema Moeda</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="professores.html">Professores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="alunos.html">Alunos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Saldo Atual</h5>
+                        <h3 id="saldo">Carregando...</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Histórico de Transações</h5>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Tipo</th>
+                                    <th>Valor</th>
+                                    <th>Mensagem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaTransacoes">
+                                <!-- Transações serão inseridas aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const professorId = "681bfbca1e976a62be72e8d5";
+
+        async function carregarDashboard() {
+            try {
+                const professorResp = await fetch(`http://localhost:9090/professor/buscarId/${professorId}`);
+                if (!professorResp.ok) throw new Error("Erro ao buscar professor");
+                const professor = await professorResp.json();
+                document.getElementById("saldo").innerText = `R$ ${professor.saldo.toFixed(2)}`;
+
+                const extratoResp = await fetch(`http://localhost:9090/professor/consultarExtrato/${professorId}`);
+                if (!extratoResp.ok) throw new Error("Erro ao buscar extrato");
+                const transacoes = await extratoResp.json();
+
+                const tabela = document.getElementById("tabelaTransacoes");
+                tabela.innerHTML = "";
+
+                transacoes.forEach(t => {
+                    const linha = document.createElement("tr");
+                    linha.innerHTML = `
+                        <td>${new Date(t.data).toLocaleDateString()}</td>
+                        <td>${t.tipo}</td>
+                        <td>${t.tipo === 'RECEBIDO' ? '+' : '-'} R$ ${t.valor.toFixed(2)}</td>
+                        <td>${t.mensagem || ''}</td>
+                    `;
+                    tabela.appendChild(linha);
+                });
+            } catch (erro) {
+                console.error("Erro ao carregar dashboard:", erro);
+                document.getElementById("saldo").innerText = "Erro ao carregar";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", carregarDashboard);
+    </script>
+</body>
+</html>
