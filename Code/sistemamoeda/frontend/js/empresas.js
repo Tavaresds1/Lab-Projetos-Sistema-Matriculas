@@ -63,15 +63,16 @@ function removerVantagem(button) {
 function coletarVantagens() {
     const vantagens = [];
     const items = document.querySelectorAll('.vantagem-item');
-    
+
     items.forEach(item => {
         const inputs = item.querySelectorAll('input');
         vantagens.push({
             descricao: inputs[0].value,
-            custo: parseInt(inputs[1].value)
+            urlImagem: inputs[1].value,
+            custo: parseFloat(inputs[2].value)
         });
     });
-    
+
     return vantagens;
 }
 
@@ -134,6 +135,9 @@ async function editarEmpresa(id) {
                     <div class="row">
                         <div class="col-md-6">
                             <input type="text" class="form-control" value="${vantagem.descricao}" required>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="${vantagem.urlImagem}" required>
                         </div>
                         <div class="col-md-4">
                             <input type="number" class="form-control" value="${vantagem.custo}" required>

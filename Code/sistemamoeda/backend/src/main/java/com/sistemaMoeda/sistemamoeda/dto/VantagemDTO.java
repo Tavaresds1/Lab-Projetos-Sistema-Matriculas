@@ -1,6 +1,5 @@
 package com.sistemaMoeda.sistemamoeda.dto;
 
-import com.sistemaMoeda.sistemamoeda.model.EmpresaParceira;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -15,8 +14,8 @@ public class VantagemDTO {
     @Positive(message = "Custo deve ser um valor positivo")
     private Integer custo;
 
-    @NotNull(message = "Empresa Parceira é obrigatória")
-    private EmpresaParceira empresaParceira;
+    @NotBlank(message = "ID da Empresa Parceira é obrigatório")
+    private String empresaParceiraId;
 
     // Getters e Setters
     public String getDescricao() {
@@ -43,11 +42,12 @@ public class VantagemDTO {
         this.custo = custo;
     }
 
-    public EmpresaParceira getEmpresaParceira() {
-        return empresaParceira;
+    public String getEmpresaParceiraId() {
+        return empresaParceiraId;
     }
 
-    public void setEmpresaParceira(EmpresaParceira empresaParceira) {
-        this.empresaParceira = empresaParceira;
+    public void setEmpresaParceiraId(String empresaParceiraId) {
+        this.empresaParceiraId = empresaParceiraId;
     }
 }
+

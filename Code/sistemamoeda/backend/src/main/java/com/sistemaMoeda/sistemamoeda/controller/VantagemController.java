@@ -1,7 +1,9 @@
 package com.sistemaMoeda.sistemamoeda.controller;
 
 import com.sistemaMoeda.sistemamoeda.dto.VantagemDTO;
+import com.sistemaMoeda.sistemamoeda.model.EmpresaParceira;
 import com.sistemaMoeda.sistemamoeda.model.Vantagem;
+import com.sistemaMoeda.sistemamoeda.services.EmpresaParceiraService;
 import com.sistemaMoeda.sistemamoeda.services.VantagemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -17,10 +20,12 @@ import java.util.stream.Collectors;
 public class VantagemController {
 
     private final VantagemService vantagemService;
+    private final EmpresaParceiraService empresaParceiraService;
 
     @Autowired
-    public VantagemController(VantagemService vantagemService) {
+    public VantagemController(VantagemService vantagemService, EmpresaParceiraService empresaParceiraService) {
         this.vantagemService = vantagemService;
+        this.empresaParceiraService = empresaParceiraService;
     }
 
     @PostMapping("/criar")
@@ -56,12 +61,15 @@ public class VantagemController {
             );
         }
 
-        Vantagem vantagem = convertToEntity(vantagemDTO);
-        Vantagem vantagemAtualizada = vantagemService.atualizarVantagem(id, vantagem);
-
-        return vantagemAtualizada != null ?
-                ResponseEntity.ok(vantagemAtualizada) :
-                ResponseEntity.notFound().build();
+        try {
+            Vantagem vantagem = convertToEntity(vantagemDTO);
+            Vantagem vantagemAtualizada = vantagemService.atualizarVantagem(id, vantagem);
+            return vantagemAtualizada != null ?
+                    ResponseEntity.ok(vantagemAtualizada) :
+                    ResponseEntity.notFound().build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
@@ -97,7 +105,12 @@ public class VantagemController {
         vantagem.setDescricao(dto.getDescricao());
         vantagem.setFoto(dto.getFoto());
         vantagem.setCusto(dto.getCusto());
-        vantagem.setEmpresaParceira(dto.getEmpresaParceira());
+
+        Optional<EmpresaParceira> empresaOptional = empresaParceiraService.buscarPorId(dto.getEmpresaParceiraId());
+        EmpresaParceira empresa = empresaOptional.orElseThrow(() ->
+                new IllegalStateException("Empresa Parceira com ID " + dto.getEmpresaParceiraId() + " não encontrada"));
+
+        vantagem.setEmpresaParceira(empresa);
         return vantagem;
     }
 }

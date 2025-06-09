@@ -1,7 +1,9 @@
 package com.sistemaMoeda.sistemamoeda.controller;
 
 import com.sistemaMoeda.sistemamoeda.dto.EmpresaParceiraDTO;
+import com.sistemaMoeda.sistemamoeda.dto.VantagemDTO;
 import com.sistemaMoeda.sistemamoeda.model.EmpresaParceira;
+import com.sistemaMoeda.sistemamoeda.model.Vantagem;
 import com.sistemaMoeda.sistemamoeda.services.EmpresaParceiraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +62,7 @@ public class EmpresaParceiraController {
                 ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscarId/{id}")
     public ResponseEntity<EmpresaParceira> buscarPorId(@PathVariable String id) {
         return empresaParceiraService.buscarPorId(id)
                 .map(ResponseEntity::ok)
@@ -82,8 +84,18 @@ public class EmpresaParceiraController {
         EmpresaParceira empresa = new EmpresaParceira();
         empresa.setNome(dto.getNome());
         empresa.setDescricao(dto.getDescricao());
-        // Aqui você precisaria converter as VantagensDTO para Vantagens
-        // empresa.setVantagens(converterVantagens(dto.getVantagens()));
+
+        if (dto.getVantagens() != null) {
+            List<Vantagem> vantagens = dto.getVantagens().stream().map(vDto -> {
+                Vantagem v = new Vantagem();
+                v.setDescricao(vDto.getDescricao());
+                v.setFoto(vDto.getFoto());
+                v.setCusto(vDto.getCusto());
+                return v;
+            }).collect(Collectors.toList());
+            empresa.setVantagens(vantagens);
+        }
+
         return empresa;
     }
 }
