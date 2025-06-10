@@ -59,7 +59,7 @@
 
             <div>
                 <label for="alunoId" class="block text-sm font-medium text-slate-300 mb-1">Selecione o Aluno</label>
-                <select id="alunoId" name="alunoId"  class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200 appearance-none">
+                <select id="alunoId" name="alunoId" class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200 appearance-none">
                     <option value="" disabled selected>Carregando alunos...</option>
                     <!-- Alunos serão populados aqui pelo JavaScript -->
                 </select>
@@ -169,11 +169,7 @@
             const valorValue = document.getElementById('valor').value;
             const mensagemValue = document.getElementById('mensagem').value;
 
-            // Validação básica no frontend (feedback rápido)
-            if (!professorIdValue || !alunoIdValue || !valorValue) {
-                showMessage('Por favor, preencha todos os campos obrigatórios (ID do Professor, Aluno, Valor).', 'error');
-                return;
-            }
+
             const valorInt = parseInt(valorValue);
 
             buttonText.classList.add('hidden');
@@ -181,9 +177,13 @@
             submitButton.disabled = true;
             responseMessageDiv.innerHTML = '';
 
-            // Os dados são coletados como se fossem para um DTO,
-            // mas a URL é construída conforme o endpoint existente do backend.
-            // Campos do TransacaoDTO não usados pelo endpoint (data, tipo, codigoConfirmacao) são omitidos aqui.
+            const dadosParaEnviar = {
+                professorId: professorIdValue,
+                alunoId: alunoIdValue,
+                valor: valorInt,
+                mensagem: mensagemValue
+            };
+
 
             const baseUrl = 'http://localhost:9090'; // URL base da sua API
             // Constrói a URL com path variables e request parameters, conforme o backend
@@ -192,9 +192,11 @@
 
             try {
                 const response = await fetch(apiUrl, {
-                    method: 'POST'
-                    // Não há 'Content-Type': 'application/json' nem 'body' JSON,
-                    // pois o backend espera os dados na URL.
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dadosParaEnviar)
                 });
 
                 if (response.ok) {
@@ -209,7 +211,7 @@
                     try {
                         const textError = await response.text();
                         if (textError) {
-                            errorMessage = textError; // O backend retorna uma string simples em caso de erro também
+                            errorMessage = textError; 
                         }
                     } catch (e) {
                         console.warn("Não foi possível ler o corpo da resposta de erro.", e);

@@ -1,6 +1,7 @@
 package com.sistemaMoeda.sistemamoeda.controller;
 
 import com.sistemaMoeda.sistemamoeda.dto.AlunoDTO;
+import com.sistemaMoeda.sistemamoeda.dto.ResgatarVantagemDTO;
 import com.sistemaMoeda.sistemamoeda.model.Aluno;
 import com.sistemaMoeda.sistemamoeda.model.Transacao;
 import com.sistemaMoeda.sistemamoeda.services.AlunoService;
@@ -79,16 +80,46 @@ public class AlunoController {
         List<Transacao> extrato = alunoService.consultarExtrato(id);
         return extrato != null ? ResponseEntity.ok(extrato) : ResponseEntity.notFound().build();
     }
-
+/*
     @PostMapping("/resgatarVantagem/{alunoId}/{idVantagem}")
     public ResponseEntity<String> resgatarVantagem(
-            @PathVariable String alunoId,
-            @PathVariable String idVantagem
+            @RequestBody @Valid ResgatarVantagemDTO dto,
+            BindingResult result
     ) {
-        alunoService.resgatarVantagem(alunoId, idVantagem);
-        return ResponseEntity.ok("Vantagem resgatada com sucesso!");
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(
+                    result.getAllErrors()
+                            .stream()
+                            .map(e -> e.getDefaultMessage())
+                            .collect(Collectors.joining(", "))
+            );
+        }
+        for (String idVantagem : dto.getVantagensIds()) {
+            alunoService.resgatarVantagem(dto.getAlunoId(), idVantagem);
+        }
+        return ResponseEntity.ok("Vantagens resgatadas com sucesso!");
+    }
+*/
+@PostMapping("/resgatarVantagem")
+public ResponseEntity<String> resgatarVantagem(
+        @RequestBody @Valid ResgatarVantagemDTO dto,
+        BindingResult result
+) {
+    if (result.hasErrors()) {
+        return ResponseEntity.badRequest().body(
+                result.getAllErrors()
+                        .stream()
+                        .map(e -> e.getDefaultMessage())
+                        .collect(Collectors.joining(", "))
+        );
     }
 
+    for (String idVantagem : dto.getVantagensIds()) {
+
+        alunoService.resgatarVantagem(dto.getAlunoId(), idVantagem);
+    }
+    return ResponseEntity.ok("Vantagens resgatadas com sucesso!");
+}
     private Aluno convertToEntity(AlunoDTO dto) {
         Aluno aluno = new Aluno();
 
