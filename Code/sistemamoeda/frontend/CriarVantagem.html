@@ -47,12 +47,12 @@
         <form id="criarVantagemForm" class="space-y-6">
             <div>
                 <label for="descricao" class="block text-sm font-medium text-slate-300 mb-1">Descrição</label>
-                <input type="text" id="descricao" name="descricao" required class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200" placeholder="Descrição da vantagem">
+                <input type="text" id="descricao" name="descricao" class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200" placeholder="Descrição da vantagem">
             </div>
 
             <div>
                 <label for="foto" class="block text-sm font-medium text-slate-300 mb-1">Foto (URL)</label>
-                <input type="url" id="foto" name="foto" class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200" placeholder="https://exemplo.com/imagem.png">
+                <input type="text" id="foto" name="foto" class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200" placeholder="https://exemplo.com/imagem.png">
             </div>
 
             <div>
@@ -96,38 +96,23 @@
             const descricao = document.getElementById('descricao').value;
             const foto = document.getElementById('foto').value;
             const custoValue = document.getElementById('custo').value;
-            const empresaParceiraIdValue = document.getElementById('empresaParceiraId').value; // Alterado para empresaParceiraIdValue
+            const empresaParceiraIdValue = document.getElementById('empresaParceiraId').value;
 
-            // Validação básica no frontend (feedback rápido)
-            if (!descricao || !custoValue || !empresaParceiraIdValue) { // Adicionada validação para empresaParceiraIdValue
-                showMessage('Descrição, Custo e ID da Empresa Parceira são campos obrigatórios.', 'error');
-                return;
-            }
-            const custoInt = parseInt(custoValue);
-            if (isNaN(custoInt) || custoInt < 0) {
-                showMessage('O custo deve ser um número igual ou maior que zero.', 'error');
-                return;
-            }
 
-            // Mostra o spinner e desabilita o botão
+
             buttonText.classList.add('hidden');
             loadingSpinner.classList.remove('hidden');
             submitButton.disabled = true;
-            responseMessageDiv.innerHTML = ''; // Limpa mensagens anteriores
+            responseMessageDiv.innerHTML = '';
 
-            // Cria o payload (VantagemDTO)
-            // Assumindo que o backend espera um objeto EmpresaParceira que pode ser identificado por um 'id'.
-            // Se a estrutura do objeto EmpresaParceira for diferente no seu backend ao receber o DTO,
-            // você precisará ajustar a estrutura de 'empresaParceira' abaixo.
+            const custoInt = parseInt(custoValue, 10);
+
             const vantagemPayload = {
                 descricao: descricao,
                 foto: foto || null, // Envia null se a string da foto estiver vazia
                 custo: custoInt,
-                empresaParceira: {
-                    id: empresaParceiraIdValue // Assumindo que a string é o ID da EmpresaParceira
-                    // Se a classe EmpresaParceira tiver outros campos obrigatórios que precisam vir do frontend,
-                    // o formulário e este payload precisariam ser mais complexos.
-                }
+                empresaParceiraId: empresaParceiraIdValue
+
             };
 
             const baseUrl = 'http://localhost:9090'; // URL base da sua API

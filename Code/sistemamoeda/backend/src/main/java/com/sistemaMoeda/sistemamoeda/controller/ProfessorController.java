@@ -1,6 +1,7 @@
 package com.sistemaMoeda.sistemamoeda.controller;
 
 import com.sistemaMoeda.sistemamoeda.dto.ProfessorDTO;
+import com.sistemaMoeda.sistemamoeda.dto.TransacaoDTO;
 import com.sistemaMoeda.sistemamoeda.model.Professor;
 import com.sistemaMoeda.sistemamoeda.model.Transacao;
 import com.sistemaMoeda.sistemamoeda.services.ProfessorService;
@@ -78,15 +79,16 @@ public class ProfessorController {
         List<Transacao> extrato = professorService.consultarExtrato(id);
         return extrato != null ? ResponseEntity.ok(extrato) : ResponseEntity.notFound().build();
     }
-
     @PostMapping("/enviarMoeda/{professorId}/{alunoId}")
-    public ResponseEntity<String> enviarIMoeda(
-            @PathVariable String professorId,
-            @PathVariable String alunoId,
-            @RequestParam int valor,
-            @RequestParam String mensagem) {
+    public ResponseEntity<String> enviarMoeda(@Valid @RequestBody TransacaoDTO transacaoDTO) {
 
-        professorService.enviarIMoeda(professorId, alunoId, valor, mensagem);
+        professorService.enviarIMoeda(
+                transacaoDTO.getProfessorId(),
+                transacaoDTO.getAlunoId(),
+                transacaoDTO.getValor().intValue(),
+                transacaoDTO.getMensagem()
+        );
+
         return ResponseEntity.ok("Moedas enviadas com sucesso!");
     }
 

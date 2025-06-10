@@ -12,14 +12,14 @@ public class TransacaoDTO {
     @NotBlank(message = "ID do professor é obrigatório")
     private String professorId;
 
-    @NotNull(message = "Data não pode ser nula")
+    //@NotNull(message = "Data não pode ser nula")
     private Date data;
 
-    @NotBlank(message = "Tipo é obrigatório")
+   // @NotBlank(message = "Tipo é obrigatório")
     private String tipo;
 
     @NotNull(message = "Valor não pode ser nulo")
-    @Positive(message = "Rodrigo")
+    @Positive(message = "Valor deve ser positivo")
     private Double valor;
 
     private String mensagem;
