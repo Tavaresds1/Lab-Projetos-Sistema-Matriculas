@@ -1,36 +1,5 @@
 const API_URL = 'http://localhost:9090/aluno';
 
-// Carregar alunos ao iniciar a página
-document.addEventListener('DOMContentLoaded', carregarAlunos);
-
-// Função para carregar todos os alunos
-async function carregarAlunos() {
-    try {
-        const response = await fetch(`${API_URL}/listarTodos`);
-        const alunos = await response.json();
-        const tbody = document.getElementById('alunosTableBody');
-        tbody.innerHTML = ''; // Limpar tabela antes de adicionar novos dados
-
-        alunos.forEach(aluno => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${aluno.nome}</td>
-                <td>${aluno.email}</td>
-                <td>${aluno.cpf}</td>
-                <td>${aluno.instituicaoEnsino}</td>
-                <td>${aluno.curso}</td>
-                <td>${aluno.saldo}</td>
-                <td>
-                    <button class="btn btn-sm btn-danger" onclick="deletarAluno('${aluno.id}')">Excluir</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-    } catch (error) {
-        console.error('Erro ao carregar alunos:', error);
-        alert('Erro ao carregar alunos. Verifique o console.');
-    }
-}
 
 // Função para salvar aluno (criar ou atualizar)
 document.getElementById('alunoForm').addEventListener('submit', async function(e) {
@@ -62,8 +31,6 @@ document.getElementById('alunoForm').addEventListener('submit', async function(e
 
         if (response.ok) {
             alert(alunoId ? 'Aluno atualizado com sucesso!' : 'Aluno criado com sucesso!');
-            limparFormulario();
-            carregarAlunos();
         } else {
             const errorData = await response.json(); // Backend envia lista de mensagens de erro
             if (response.status === 400 && Array.isArray(errorData)) {

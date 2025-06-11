@@ -1,28 +1,31 @@
 package com.sistemaMoeda.sistemamoeda.controller;
 
-import org.hibernate.validator.constraints.br.CPF;
+import com.sistemaMoeda.sistemamoeda.model.Aluno;
+import com.sistemaMoeda.sistemamoeda.repository.AlunoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.validation.BindingResult;
-import com.sistemaMoeda.sistemamoeda.dto.UsuarioDTO;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/login")
 public class LoginController {
+
+    @Autowired
+    private AlunoRepository alunoRepository;
+
     @PostMapping
-    @ResponseBody
-    public Object login(@RequestBody @Valid UsuarioDTO usuarioDTO, BindingResult result) {
-        if (result.hasErrors()) {
-            return result.getAllErrors()
-                .stream()
-                .map(e -> e.getDefaultMessage())
-                .toList();
-        }
-        if (usuarioDTO.getEmail() == null || usuarioDTO.getSenha() == null) {
-            return "Login ou senha inválidos!";
+    public ResponseEntity<?> login(@RequestBody Aluno loginRequest) {
+        if (loginRequest.getEmail() == null || loginRequest.getSenha() == null) {
+            return ResponseEntity.badRequest().body("Email e senha são obrigatórios");
         }
 
-        return "Login realizado com sucesso!";
+        Aluno aluno = alunoRepository.findByEmail(loginRequest.getEmail());
+
+        if (aluno == null || !aluno.getSenha().equals(loginRequest.getSenha())) {
+            return ResponseEntity.status(401).body("Credenciais inválidas");
+        }
+
+        return ResponseEntity.ok(aluno); // ou retornar um DTO
     }
 }
+

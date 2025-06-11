@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard do Aluno</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        td.break-text {
+            word-break: break-word;
+            white-space: normal;
+        }
+    </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
@@ -22,12 +29,22 @@
                     <li class="nav-item">
                         <a class="nav-link" href="empresas.html">Empresas Parceiras</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="resgvantagem.html">Resgatar Vantagens</a>
+                    </li>
                 </ul>
+                <button class="btn btn-danger" onclick="logout()">Sair</button>
+                <script>
+                    function logout() {
+                        localStorage.removeItem('alunoLogado');
+                        window.location.href = 'login.html';
+                    }
+                </script>
             </div>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container mt-4">
         <div class="row mb-4">
             <div class="col-md-4">
                 <div class="card text-center">
@@ -40,23 +57,25 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Histórico de Transações</h5>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Tipo</th>
-                                    <th>Valor</th>
-                                    <th>Mensagem</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabelaTransacoes">
-                                <!-- Transações serão inseridas aqui -->
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-striped align-middle text-nowrap">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col">Data</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col">Valor</th>
+                                        <th scope="col">Mensagem</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabelaTransacoes">
+                                    <!-- Transações serão inseridas aqui -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,39 +83,59 @@
     </div>
 
     <script>
-        const alunoId = "683509ab9237be4fb89c11b1";
+        function carregarDashboard() {
+            const alunoLogado = localStorage.getItem('alunoLogado');
 
-        async function carregarDashboard() {
-            try {
-                const alunoResp = await fetch(`http://localhost:9090/aluno/buscarId/${alunoId}`);
-                if (!alunoResp.ok) throw new Error("Erro ao buscar aluno");
-                const aluno = await alunoResp.json();
-                document.getElementById("saldo").innerText = `R$ ${aluno.saldo.toFixed(2)}`;
-
-                const transacoesResp = await fetch(`http://localhost:9090/transacao/listarPorAluno/${alunoId}`);
-                if (!transacoesResp.ok) throw new Error("Erro ao buscar transações");
-                const transacoes = await transacoesResp.json();
-
-                const tabela = document.getElementById("tabelaTransacoes");
-                tabela.innerHTML = "";
-
-                transacoes.forEach(t => {
-                    const linha = document.createElement("tr");
-                    linha.innerHTML = `
-                        <td>${new Date(t.data).toLocaleDateString()}</td>
-                        <td>${t.tipo}</td>
-                        <td>${t.tipo === 'RECEBIDO' ? '-' : '+'} R$ ${t.valor.toFixed(2)}</td>
-                        <td>${t.mensagem || ''}</td>
-                    `;
-                    tabela.appendChild(linha);
-                });
-            } catch (erro) {
-                console.error("Erro ao carregar dashboard:", erro);
-                document.getElementById("saldo").innerText = "Erro ao carregar";
+            if (!alunoLogado) {
+                alert("Você precisa estar logado para acessar o dashboard.");
+                window.location.href = "login.html";
+                return;
             }
+
+            const aluno = JSON.parse(alunoLogado);
+            const alunoId = aluno.id;
+
+            fetch(`http://localhost:9090/aluno/buscarId/${alunoId}`)
+                .then(resp => {
+                    if (!resp.ok) throw new Error("Erro ao buscar aluno");
+                    return resp.json();
+                })
+                .then(aluno => {
+                    document.getElementById("saldo").innerText = `R$ ${aluno.saldo.toFixed(2)}`;
+                })
+                .catch(erro => {
+                    console.error("Erro ao buscar saldo:", erro);
+                    document.getElementById("saldo").innerText = "Erro ao carregar";
+                });
+
+            fetch(`http://localhost:9090/transacao/listarPorAluno/${alunoId}`)
+                .then(resp => {
+                    if (!resp.ok) throw new Error("Erro ao buscar transações");
+                    return resp.json();
+                })
+                .then(transacoes => {
+                    const tabela = document.getElementById("tabelaTransacoes");
+                    tabela.innerHTML = "";
+                    transacoes.forEach(t => {
+                        const linha = document.createElement("tr");
+                        linha.innerHTML = `
+                            <td>${new Date(t.data).toLocaleDateString()}</td>
+                            <td>${t.tipo}</td>
+                            <td>R$ ${t.valor.toFixed(2)}</td>
+                            <td class="break-text">${t.mensagem || ''}</td>
+                        `;
+                        tabela.appendChild(linha);
+                    });
+                })
+                .catch(erro => {
+                    console.error("Erro ao carregar transações:", erro);
+                });
         }
 
         document.addEventListener("DOMContentLoaded", carregarDashboard);
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

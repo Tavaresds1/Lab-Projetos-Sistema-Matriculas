@@ -43,8 +43,50 @@
     </style>
 </head>
 
-<body class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen flex items-center justify-center p-4">
-    <div class="bg-slate-800 shadow-2xl rounded-xl p-6 md:p-10 w-full max-w-lg border border-slate-700">
+<script>
+    const aluno = localStorage.getItem('alunoLogado');
+    if (!aluno) {
+        window.location.href = 'login.html';
+    }
+
+    function logout() {
+        localStorage.removeItem('alunoLogado');
+        window.location.href = 'login.html';
+    }
+</script>
+
+
+<body class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen flex flex-col items-center p-4">
+
+    <nav class="w-full bg-slate-900 text-white shadow-lg mb-8">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a class="text-2xl font-bold text-sky-400" href="index.html">Sistema Moeda</a>
+            <div class="flex-grow flex justify-center">
+                <ul class="flex space-x-8">
+                    <li class="nav-item">
+                        <a class="text-slate-300 hover:text-sky-400 transition-colors duration-200 text-lg"
+                            href="alunos.html">Alunos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="text-slate-300 hover:text-sky-400 transition-colors duration-200 text-lg"
+                            href="empresas.html">Empresas Parceiras</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="text-slate-300 hover:text-sky-400 transition-colors duration-200 text-lg"
+                            href="resgatarVantagem.html">Resgatar Vantagens</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="text-slate-300 hover:text-sky-400 transition-colors duration-200 text-lg"
+                            href="dashboardAluno.html">Consultar Extrato</a>
+                    </li>
+                </ul>
+            </div>
+            <button class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+                onclick="logout()">Sair</button>
+        </div>
+    </nav>
+
+    <div class="bg-slate-800 shadow-2xl rounded-xl p-6 md:p-10 w-full max-w-lg border border-slate-700 mt-8">
         <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-sky-400">Resgatar Vantagem</h1>
             <p class="text-slate-400 mt-2">Selecione a vantagem que deseja resgatar.</p>
@@ -52,20 +94,17 @@
 
         <form id="resgatarVantagemForm" class="space-y-6">
             <div>
-                <label for="alunoId" class="block text-sm font-medium text-slate-300 mb-1">Seu ID de Aluno</label>
-                <input type="text" id="alunoId" name="alunoId" class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200" placeholder="Insira seu ID de aluno">
-            </div>
-
-            <div>
-                <label for="vantagemId" class="block text-sm font-medium text-slate-300 mb-1">Selecione a Vantagem</label>
-                <select id="vantagemId" name="vantagemId" class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200 appearance-none">
+                <label for="vantagemId" class="block text-sm font-medium text-slate-300 mb-1">Selecione a
+                    Vantagem</label>
+                <select id="vantagemId" name="vantagemId"
+                    class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200 appearance-none">
                     <option value="" disabled selected>Carregando vantagens...</option>
-
                 </select>
             </div>
 
             <div>
-                <button type="submit" id="submitButton" class="w-full flex items-center justify-center bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75 shadow-lg">
+                <button type="submit" id="submitButton"
+                    class="w-full flex items-center justify-center bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-75 shadow-lg">
                     <span id="buttonText">Resgatar Vantagem</span>
                     <div id="loadingSpinner" class="loader hidden"></div>
                 </button>
@@ -81,7 +120,6 @@
     <script>
         // Elementos do DOM
         const form = document.getElementById('resgatarVantagemForm');
-        const alunoIdInput = document.getElementById('alunoId');
         const vantagemSelect = document.getElementById('vantagemId');
         const responseMessageDiv = document.getElementById('responseMessage');
         const submitButton = document.getElementById('submitButton');
@@ -89,6 +127,17 @@
         const loadingSpinner = document.getElementById('loadingSpinner');
 
         const BASE_URL = 'http://localhost:9090';
+
+        // Get the logged-in student's data from localStorage
+        const alunoLogadoData = JSON.parse(localStorage.getItem('alunoLogado'));
+        const alunoId = alunoLogadoData ? alunoLogadoData.id : null; // Get the ID if alunoLogadoData exists
+
+        // Redirect to login if no student is logged in
+        if (!alunoId) {
+            console.error("ID do aluno não encontrado. Redirecionando para a página de login.");
+            window.location.href = 'login.html';
+        }
+
 
         // --- Lógica para carregar vantagens ---
         async function fetchVantagens() {
@@ -147,7 +196,7 @@
         form.addEventListener('submit', async function (event) {
             event.preventDefault();
 
-            const alunoId = alunoIdInput.value;
+            // Use the globally available alunoId
             const idVantagem = vantagemSelect.value;
 
 
@@ -157,11 +206,10 @@
             responseMessageDiv.innerHTML = '';
 
             const dados = {
-                alunoId: alunoId,
+                alunoId: alunoId, // Use the extracted alunoId
                 vantagensIds: [idVantagem]
             };
 
-            // Endpoint: @PostMapping("/resgatarVantagem/{alunoId}/{idVantagem}")
             const apiUrl = `${BASE_URL}/aluno/resgatarVantagem`;
 
             try {
@@ -173,11 +221,12 @@
                     body: JSON.stringify(dados)
                 });
 
-                const responseText = await response.text(); // O backend retorna uma string simples
+                const responseText = await response.text(); // The backend returns a simple string
 
                 if (response.ok) {
                     showMessage(responseText || 'Vantagem resgatada com sucesso!', 'success');
-
+                    // Optionally, clear the selected advantage or refresh the list
+                    vantagemSelect.value = ""; // Resets the dropdown to the default option
                 } else {
                     showMessage(responseText || `Erro ao resgatar vantagem. Status: ${response.status}`, 'error');
                 }
