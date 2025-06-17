@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Document(collection = "empresas_parceiras")
@@ -11,11 +13,14 @@ import java.util.List;
 public class EmpresaParceira {
     @Id
     private String id;
+
+    @NotBlank(message = "O nome é obrigatório.")
+    @Size(max = 100, message = "O nome deve ter no máximo 100 caracteres.")
     private String nome;
-    private List<Vantagem> vantagens;
+
+    @NotBlank(message = "A descrição é obrigatória.")
+    @Size(max = 255, message = "A descrição deve ter no máximo 255 caracteres.")
     private String descricao;
 
-    public void cadastrarVantagem(Vantagem vantagem) {
-        // Implementação do cadastro de vantagem
-    }
+    private List<Vantagem> vantagens;
 }
