@@ -126,6 +126,7 @@ public ResponseEntity<String> resgatarVantagem(
         aluno.setEmail(dto.getEmail());
         aluno.setSenha(dto.getSenha());
         aluno.setCpf(dto.getCpf());
+        aluno.setLogin(dto.getEmail());
 
 
         aluno.setNome(dto.getNome());

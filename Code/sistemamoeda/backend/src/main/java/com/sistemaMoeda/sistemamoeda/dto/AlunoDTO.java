@@ -20,6 +20,7 @@ public class AlunoDTO extends UsuarioDTO {
     private String curso;
 
 
+
     public String getNome() {
         return nome;
     }
@@ -48,6 +49,7 @@ public class AlunoDTO extends UsuarioDTO {
     public String getCurso() {
         return curso;
     }
+
 
     public void setCurso(String curso) {
         this.curso = curso;
