@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -22,5 +23,12 @@ public class EmpresaParceira {
     @Size(max = 255, message = "A descrição deve ter no máximo 255 caracteres.")
     private String descricao;
 
+    @NotBlank(message = "O email é obrigatório.")
+    @Email(message = "O email deve ser válido.")
+    private String email;
+
     private List<Vantagem> vantagens;
+
+    public void setSenha(String novaSenha) {
+    }
 }
