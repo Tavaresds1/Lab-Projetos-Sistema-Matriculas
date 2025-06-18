@@ -85,7 +85,7 @@ public class EmpresaParceiraController {
         empresa.setNome(dto.getNome());
         empresa.setDescricao(dto.getDescricao());
 
-        if (dto.getVantagens() != null) {
+     /*  if (dto.getVantagens() != null) {
             List<Vantagem> vantagens = dto.getVantagens().stream().map(vDto -> {
                 Vantagem v = new Vantagem();
                 v.setDescricao(vDto.getDescricao());
@@ -94,7 +94,7 @@ public class EmpresaParceiraController {
                 return v;
             }).collect(Collectors.toList());
             empresa.setVantagens(vantagens);
-        }
+        }*/
 
         return empresa;
     }
