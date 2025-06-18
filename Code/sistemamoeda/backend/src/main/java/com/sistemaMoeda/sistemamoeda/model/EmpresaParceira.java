@@ -11,7 +11,7 @@ import java.util.List;
 
 @Document(collection = "empresas_parceiras")
 @Data
-public class EmpresaParceira {
+public class EmpresaParceira extends Usuario {
     @Id
     private String id;
 
@@ -23,12 +23,14 @@ public class EmpresaParceira {
     @Size(max = 255, message = "A descrição deve ter no máximo 255 caracteres.")
     private String descricao;
 
-    @NotBlank(message = "O email é obrigatório.")
-    @Email(message = "O email deve ser válido.")
-    private String email;
 
     private List<Vantagem> vantagens;
 
     public void setSenha(String novaSenha) {
+    }
+
+    @Override
+    public void autenticar() {
+        
     }
 }

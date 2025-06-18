@@ -10,5 +10,5 @@ public interface ProfessorRepository extends MongoRepository<Professor, String> 
     Professor findByEmail(String Email);
     List<Professor> findByInstituicao(String instituicao);
 
-    Professor findByEmail(String email);
+
 }
