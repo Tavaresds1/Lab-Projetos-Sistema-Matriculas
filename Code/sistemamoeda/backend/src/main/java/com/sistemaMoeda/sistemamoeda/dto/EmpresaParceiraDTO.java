@@ -1,5 +1,6 @@
 package com.sistemaMoeda.sistemamoeda.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -10,6 +11,10 @@ public class EmpresaParceiraDTO {
 
     @NotNull(message = "Vantagens não pode ser nulo")
     private List<VantagemDTO> vantagens;
+
+    @NotBlank(message = "Email é obrigatório")
+    @Email(message = "Email deve ser válido")
+    private String email;
 
     private String descricao;
 

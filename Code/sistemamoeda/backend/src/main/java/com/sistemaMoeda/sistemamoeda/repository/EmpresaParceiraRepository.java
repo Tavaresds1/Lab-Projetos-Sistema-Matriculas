@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface EmpresaParceiraRepository extends MongoRepository<EmpresaParceira, String> {
     boolean existsById(String id);
     EmpresaParceira findByNome(String nome);
+
+    EmpresaParceira findByEmail(String email);
 }
