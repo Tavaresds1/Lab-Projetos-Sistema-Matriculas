@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema Moeda</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        /* Additional specific styles for login page if needed */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f9fa; /* From your style.css */
+        }
+        .login-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            width: 100%;
+            max-width: 450px; /* Adjusted max-width for a typical login form */
+        }
+        .navbar-brand-login { 
+            font-size: 1.5rem; /* Example: make brand slightly bigger if desired */
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="container login-container">
+        <div class="card login-card">
+            <div class="card-body p-4 p-md-5">
+                <h5 class="card-title text-center mb-4">Login Professor</h5>
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="seuemail@exemplo.com" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="senha" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="senha" placeholder="Sua senha" required>
+                    </div>
+
+                    <div id="errorMessage" class="alert alert-danger d-none" role="alert">
+                        </div>
+
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-primary">Entrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/loginProfessor.js"></script>
+</body>
+</html>

@@ -53,8 +53,8 @@
 
         <form id="enviarMoedaForm" class="space-y-6">
             <div>
-                <label for="professorId" class="block text-sm font-medium text-slate-300 mb-1">ID do Professor</label>
-                <input type="text" id="professorId" name="professorId" class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200" placeholder="Seu ID de professor (Ex: PROF001)">
+                <label for="professorId" class="block text-sm font-medium text-slate-300 mb-1">Professor</label>
+                <input type="text" id="professorId" name="professorId" class="w-full px-4 py-3 bg-slate-700 text-slate-200 border border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors duration-200" readonly>
             </div>
 
             <div>
@@ -97,6 +97,27 @@
         const buttonText = document.getElementById('buttonText');
         const loadingSpinner = document.getElementById('loadingSpinner');
         const alunoSelect = document.getElementById('alunoId');
+        const professorIdInput = document.getElementById('professorId');
+
+        // Verifica se o professor está logado
+        document.addEventListener('DOMContentLoaded', function() {
+            const professorLogado = JSON.parse(localStorage.getItem('professorLogado'));
+            
+            if (!professorLogado || !professorLogado.id) {
+                showMessage('Você precisa estar logado como professor para acessar esta página.', 'error');
+                // Redireciona para a página de login após 3 segundos
+                setTimeout(() => {
+                    window.location.href = 'loginProfessor.html';
+                }, 3000);
+                return;
+            }
+
+            // Preenche o campo do professor com os dados do localStorage
+            professorIdInput.value = `${professorLogado.nome} (ID: ${professorLogado.id})`;
+            
+            // Carrega a lista de alunos
+            fetchAlunos();
+        });
 
         // --- INÍCIO: Lógica para carregar alunos ---
         async function fetchAlunos() {
@@ -144,7 +165,7 @@
 
                 alunos.forEach(aluno => {
                     const option = document.createElement('option');
-                    option.value = aluno.id; // Assumindo que o ID do aluno é uma string
+                    option.value = aluno.id;
                     option.textContent = `${aluno.nome || 'Nome não disponível'} (ID: ${aluno.id})`;
                     alunoSelect.appendChild(option);
                 });
@@ -157,18 +178,23 @@
                 alunoSelect.appendChild(noAlunoOption);
             }
         }
-        document.addEventListener('DOMContentLoaded', fetchAlunos);
         // --- FIM: Lógica para carregar alunos ---
 
         // Script para lidar com o envio do formulário
         form.addEventListener('submit', async function (event) {
             event.preventDefault();
 
-            const professorIdValue = document.getElementById('professorId').value;
+            const professorLogado = JSON.parse(localStorage.getItem('professorLogado'));
+            if (!professorLogado || !professorLogado.id) {
+                showMessage('Sessão expirada. Por favor, faça login novamente.', 'error');
+                window.location.href = 'loginProfessor.html';
+                return;
+            }
+
+            const professorIdValue = professorLogado.id;
             const alunoIdValue = alunoSelect.value;
             const valorValue = document.getElementById('valor').value;
             const mensagemValue = document.getElementById('mensagem').value;
-
 
             const valorInt = parseInt(valorValue);
 
@@ -184,10 +210,7 @@
                 mensagem: mensagemValue
             };
 
-
-            const baseUrl = 'http://localhost:9090'; // URL base da sua API
-            // Constrói a URL com path variables e request parameters, conforme o backend
-            // Endpoint: @PostMapping("/enviarMoeda/{professorId}/{alunoId}")
+            const baseUrl = 'http://localhost:9090';
             const apiUrl = `${baseUrl}/professor/enviarMoeda/${encodeURIComponent(professorIdValue)}/${encodeURIComponent(alunoIdValue)}?valor=${encodeURIComponent(valorInt)}&mensagem=${encodeURIComponent(mensagemValue)}`;
 
             try {
@@ -201,11 +224,13 @@
 
                 if (response.ok) {
                     const responseText = await response.text();
-                    showMessage(responseText || 'Moedas enviadas com sucesso!', 'success');
-                    form.reset();
-                    if (alunoSelect.options.length > 0) {
-                        alunoSelect.selectedIndex = 0;
-                    }
+                    showMessage(responseText || 'Moedas enviadas com sucesso! Redirecionando...', 'success');
+                    
+                    // Redireciona para a dashboard após 2 segundos
+                    setTimeout(() => {
+                        window.location.href = 'dashboardProfessor.html';
+                    }, 2000);
+                    
                 } else {
                     let errorMessage = `Erro ao enviar moedas. Status: ${response.status}`;
                     try {
@@ -242,11 +267,14 @@
             }
             responseMessageDiv.appendChild(messageElement);
 
-            setTimeout(() => {
-                if (responseMessageDiv.contains(messageElement)) {
-                    responseMessageDiv.removeChild(messageElement);
-                }
-            }, 7000);
+            // Não remove automaticamente mensagens de sucesso pois vamos redirecionar
+            if (type !== 'success') {
+                setTimeout(() => {
+                    if (responseMessageDiv.contains(messageElement)) {
+                        responseMessageDiv.removeChild(messageElement);
+                    }
+                }, 7000);
+            }
         }
     </script>
 </body>

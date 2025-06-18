@@ -37,7 +37,4 @@ public class Professor extends Usuario {
     public void autenticar() {
         // Implementação da autenticação
     }
-    public void setEmail(String email) {
-
-    }
 }

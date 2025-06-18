@@ -98,13 +98,14 @@ public class ProfessorController {
         professor.setEmail(dto.getEmail());
         professor.setSenha(dto.getSenha());
         professor.setCpf(dto.getCpf());
+        professor.setLogin(dto.getEmail());
 
 
         professor.setNome(dto.getNome());
         professor.setDepartamento(dto.getDepartamento());
         professor.setInstituicao(dto.getInstituicao());
 
-        professor.setSaldo(0);
+        professor.setSaldo(1000);
         return professor;
     }
 }
