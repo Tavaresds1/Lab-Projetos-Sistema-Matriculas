@@ -31,6 +31,6 @@ public class EmpresaParceira extends Usuario {
 
     @Override
     public void autenticar() {
-        
+
     }
 }
