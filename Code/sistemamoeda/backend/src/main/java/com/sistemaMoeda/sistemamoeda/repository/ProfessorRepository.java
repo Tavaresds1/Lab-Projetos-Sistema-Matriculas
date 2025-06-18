@@ -9,4 +9,6 @@ public interface ProfessorRepository extends MongoRepository<Professor, String> 
     Professor findByCpf(String cpf);
     Professor findByLogin(String login);
     List<Professor> findByInstituicao(String instituicao);
+
+    Professor findByEmail(String email);
 }
