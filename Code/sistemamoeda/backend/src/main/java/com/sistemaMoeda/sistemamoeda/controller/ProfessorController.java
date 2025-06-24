@@ -11,7 +11,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -79,18 +82,28 @@ public class ProfessorController {
         List<Transacao> extrato = professorService.consultarExtrato(id);
         return extrato != null ? ResponseEntity.ok(extrato) : ResponseEntity.notFound().build();
     }
-    @PostMapping("/enviarMoeda/{professorId}/{alunoId}")
-    public ResponseEntity<String> enviarMoeda(@Valid @RequestBody TransacaoDTO transacaoDTO) {
 
-        professorService.enviarIMoeda(
-                transacaoDTO.getProfessorId(),
-                transacaoDTO.getAlunoId(),
-                transacaoDTO.getValor().intValue(),
-                transacaoDTO.getMensagem()
-        );
+  @PostMapping("/enviarMoeda")
+  public ResponseEntity<?> enviarMoeda(@Valid @RequestBody TransacaoDTO transacaoDTO, BindingResult result) {
+      if (result.hasErrors()) {
+          List<String> errors = result.getFieldErrors().stream()
+                  .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                  .collect(Collectors.toList());
+          return ResponseEntity.badRequest().body(errors);
+      }
 
-        return ResponseEntity.ok("Moedas enviadas com sucesso!");
-    }
+      try {
+          professorService.enviarIMoeda(
+                  transacaoDTO.getProfessorId(),
+                  transacaoDTO.getAlunoId(),
+                  transacaoDTO.getValor().intValue(),
+                  transacaoDTO.getMensagem()
+          );
+          return ResponseEntity.ok("Moedas enviadas com sucesso!");
+      } catch (Exception e) {
+          return ResponseEntity.badRequest().body(e.getMessage());
+      }
+  }
 
     private Professor convertToEntity(ProfessorDTO dto) {
         Professor professor = new Professor();
