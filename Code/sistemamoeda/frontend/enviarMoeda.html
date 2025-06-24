@@ -100,9 +100,9 @@
         const professorIdInput = document.getElementById('professorId');
 
         // Verifica se o professor está logado
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const professorLogado = JSON.parse(localStorage.getItem('professorLogado'));
-            
+
             if (!professorLogado || !professorLogado.id) {
                 showMessage('Você precisa estar logado como professor para acessar esta página.', 'error');
                 // Redireciona para a página de login após 3 segundos
@@ -114,7 +114,7 @@
 
             // Preenche o campo do professor com os dados do localStorage
             professorIdInput.value = `${professorLogado.nome} (ID: ${professorLogado.id})`;
-            
+
             // Carrega a lista de alunos
             fetchAlunos();
         });
@@ -211,8 +211,7 @@
             };
 
             const baseUrl = 'http://localhost:9090';
-            const apiUrl = `${baseUrl}/professor/enviarMoeda/${encodeURIComponent(professorIdValue)}/${encodeURIComponent(alunoIdValue)}?valor=${encodeURIComponent(valorInt)}&mensagem=${encodeURIComponent(mensagemValue)}`;
-
+            const apiUrl = `${baseUrl}/professor/enviarMoeda`;
             try {
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -225,21 +224,24 @@
                 if (response.ok) {
                     const responseText = await response.text();
                     showMessage(responseText || 'Moedas enviadas com sucesso! Redirecionando...', 'success');
-                    
-                    // Redireciona para a dashboard após 2 segundos
+
+
                     setTimeout(() => {
                         window.location.href = 'dashboardProfessor.html';
                     }, 2000);
-                    
                 } else {
-                    let errorMessage = `Erro ao enviar moedas. Status: ${response.status}`;
+                    let errorMessage = 'Erro ao enviar moedas';
                     try {
-                        const textError = await response.text();
-                        if (textError) {
-                            errorMessage = textError; 
+                        const errorResponse = await response.json();
+                   
+                        if (errorResponse.errors) {
+                            errorMessage = Object.values(errorResponse.errors).join(', ');
+                        } else if (errorResponse.message) {
+                            errorMessage = errorResponse.message;
                         }
                     } catch (e) {
-                        console.warn("Não foi possível ler o corpo da resposta de erro.", e);
+                        const textError = await response.text();
+                        if (textError) errorMessage = textError;
                     }
                     showMessage(errorMessage, 'error');
                 }
