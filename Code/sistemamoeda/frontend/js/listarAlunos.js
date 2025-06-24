@@ -31,6 +31,9 @@ document.getElementById('alunoForm').addEventListener('submit', async function(e
 
         if (response.ok) {
             alert(alunoId ? 'Aluno atualizado com sucesso!' : 'Aluno criado com sucesso!');
+            if (!alunoId) {
+                window.location.href = 'login.html'; // Redireciona para login após criação
+            }
         } else {
             const errorData = await response.json(); // Backend envia lista de mensagens de erro
             if (response.status === 400 && Array.isArray(errorData)) {

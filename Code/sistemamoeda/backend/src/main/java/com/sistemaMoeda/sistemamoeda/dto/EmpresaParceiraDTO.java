@@ -5,13 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
-public class EmpresaParceiraDTO {
+public class EmpresaParceiraDTO extends UsuarioDTO {
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
-
-
-
+    @NotBlank(message = "Descrição da empresa é obrigatório")
     private String descricao;
 
 

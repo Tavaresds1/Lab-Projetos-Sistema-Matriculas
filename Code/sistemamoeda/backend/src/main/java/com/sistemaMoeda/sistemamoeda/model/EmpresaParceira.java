@@ -26,8 +26,6 @@ public class EmpresaParceira extends Usuario {
 
     private List<Vantagem> vantagens;
 
-    public void setSenha(String novaSenha) {
-    }
 
     @Override
     public void autenticar() {

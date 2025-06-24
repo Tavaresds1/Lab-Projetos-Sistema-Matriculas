@@ -65,18 +65,6 @@
                 <ul class="flex space-x-8">
                     <li class="nav-item">
                         <a class="text-slate-300 hover:text-sky-400 transition-colors duration-200 text-lg"
-                            href="alunos.html">Alunos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="text-slate-300 hover:text-sky-400 transition-colors duration-200 text-lg"
-                            href="empresas.html">Empresas Parceiras</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="text-slate-300 hover:text-sky-400 transition-colors duration-200 text-lg"
-                            href="resgatarVantagem.html">Resgatar Vantagens</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="text-slate-300 hover:text-sky-400 transition-colors duration-200 text-lg"
                             href="dashboardAluno.html">Consultar Extrato</a>
                     </li>
                 </ul>
@@ -226,7 +214,10 @@
                 if (response.ok) {
                     showMessage(responseText || 'Vantagem resgatada com sucesso!', 'success');
                     // Optionally, clear the selected advantage or refresh the list
-                    vantagemSelect.value = ""; // Resets the dropdown to the default option
+                    vantagemSelect.value = "";
+                    setTimeout(() => {
+                        window.location.href = 'dashboardAluno.html';
+                    }, 2000); // Resets the dropdown to the default option
                 } else {
                     showMessage(responseText || `Erro ao resgatar vantagem. Status: ${response.status}`, 'error');
                 }

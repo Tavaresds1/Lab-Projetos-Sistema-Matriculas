@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minhas Vantagens</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-blue-50 min-h-screen">
+  <!-- Navbar -->
+  <nav class="bg-blue-600 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+        <a href="index.html" class="text-white font-bold text-xl">Sistema Moeda</a>
+          <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Sair</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Conteúdo -->
+  <main class="p-6">
+    <div class="max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-6">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-blue-800">Minhas Vantagens</h1>
+        <button onclick="window.location.href='criarVantagem.html'"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Nova Vantagem</button>
+      </div>
+
+      <div id="mensagem" class="mb-4"></div>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-blue-200">
+          <thead class="bg-blue-100">
+            <tr>
+              <th class="px-4 py-2 text-left text-sm font-semibold text-blue-700">Descrição</th>
+              <th class="px-4 py-2 text-left text-sm font-semibold text-blue-700">Imagem</th>
+              <th class="px-4 py-2 text-left text-sm font-semibold text-blue-700">Custo</th>
+              <th class="px-4 py-2 text-left text-sm font-semibold text-blue-700">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaVantagens" class="bg-white divide-y divide-gray-100"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
+    const tabela = document.getElementById('tabelaVantagens');
+    const mensagem = document.getElementById('mensagem');
+
+    if (!empresaLogada || !empresaLogada.id) {
+      window.location.href = "loginEmpresa.html";
+    } else {
+      carregarVantagens();
+    }
+
+    async function carregarVantagens() {
+      try {
+        const response = await fetch(`http://localhost:9090/vantagem/empresa/${empresaLogada.id}`);
+        const vantagens = await response.json();
+
+        if (vantagens.length === 0) {
+          tabela.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-gray-500">Nenhuma vantagem cadastrada.</td></tr>';
+          return;
+        }
+
+        tabela.innerHTML = vantagens.map(v => `
+          <tr>
+              <td class="px-4 py-3">${v.descricao}</td>
+              <td class="px-4 py-3">
+                  ${v.foto ? `<img src="${v.foto}" alt="Imagem" class="h-16 rounded">` : '<span class="text-gray-400">Sem imagem</span>'}
+              </td>
+              <td class="px-4 py-3">${v.custo} moedas</td>
+              <td class="px-4 py-3 space-x-2">
+                  <button onclick="editarVantagem('${v.id}')" class="text-sm bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded">Editar</button>
+                  <button onclick="deletarVantagem('${v.id}')" class="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Excluir</button>
+              </td>
+          </tr>
+        `).join('');
+
+      } catch (error) {
+        console.error("Erro ao carregar vantagens:", error);
+        mensagem.textContent = "Erro ao carregar vantagens.";
+        mensagem.className = "text-red-600";
+      }
+    }
+
+    function editarVantagem(id) {
+      window.location.href = `criarVantagem.html?id=${id}`;
+    }
+
+    async function deletarVantagem(id) {
+      if (!confirm("Deseja realmente excluir esta vantagem?")) return;
+
+      try {
+        const response = await fetch(`http://localhost:9090/vantagem/delete/${id}`, {
+          method: 'DELETE'
+        });
+
+        if (response.ok) {
+          mensagem.textContent = "Vantagem excluída com sucesso.";
+          mensagem.className = "text-green-600 mb-4";
+          carregarVantagens();
+        } else {
+          throw new Error();
+        }
+      } catch (error) {
+        mensagem.textContent = "Erro ao excluir vantagem.";
+        mensagem.className = "text-red-600 mb-4";
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('empresaLogada');
+      window.location.href = 'loginEmpresa.html';
+    }
+  </script>
+</body>
+
+</html>

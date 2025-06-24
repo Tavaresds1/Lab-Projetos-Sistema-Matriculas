@@ -84,6 +84,9 @@ public class EmpresaParceiraController {
         EmpresaParceira empresa = new EmpresaParceira();
         empresa.setNome(dto.getNome());
         empresa.setDescricao(dto.getDescricao());
+        empresa.setSenha(dto.getSenha());
+        empresa.setLogin(dto.getEmail());
+        empresa.setEmail(dto.getEmail());
 
      /*   if (dto.getVantagens() != null) {
             List<Vantagem> vantagens = dto.getVantagens().stream().map(vDto -> {

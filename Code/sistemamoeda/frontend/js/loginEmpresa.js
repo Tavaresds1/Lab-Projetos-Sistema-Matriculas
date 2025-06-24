@@ -18,9 +18,9 @@ document
       if (response.ok) {
         const empresa = await response.json();
         // Armazena dados no localStorage (ou sessionStorage)
-        localStorage.setItem("empresaLogada", JSON.stringify(professor));
+        localStorage.setItem("empresaLogada", JSON.stringify(empresa));
 
-        window.location.href = "criarVantagem.html";
+        window.location.href = "visualizarVantagens.html";
       } else {
         const erro = await response.text();
         alert("Erro ao fazer login: " + erro);

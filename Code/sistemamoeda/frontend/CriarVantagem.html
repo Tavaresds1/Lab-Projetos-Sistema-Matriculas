@@ -2,191 +2,185 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criar Nova Vantagem</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar Nova Vantagem</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
 
-        /* Estilo para o spinner de carregamento */
-        .loader {
-            border: 4px solid #f3f3f3;
-            /* Light grey */
-            border-top: 4px solid #0d6efd; /* Azul principal */
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
-        }
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #0d6efd;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
 
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 </head>
 
 <body class="bg-blue-50 min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white shadow-2xl rounded-xl p-6 md:p-10 w-full max-w-lg border border-blue-200">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-[#0d6efd]">Criar Nova Vantagem</h1>
-            <p class="text-blue-700 mt-2">Preencha os dados abaixo para registrar uma nova vantagem.</p>
-        </div>
-
-        <form id="criarVantagemForm" class="space-y-6">
-            <div>
-                <label for="descricao" class="block text-sm font-medium text-blue-700 mb-1">Descrição</label>
-                <input type="text" id="descricao" name="descricao" class="w-full px-4 py-3 bg-white text-blue-800 border border-blue-300 rounded-lg focus:ring-2 focus:ring-[#0d6efd] focus:border-[#0d6efd] outline-none transition-colors duration-200" placeholder="Descrição da vantagem">
-            </div>
-
-            <div>
-                <label for="foto" class="block text-sm font-medium text-blue-700 mb-1">Foto (URL)</label>
-                <input type="text" id="foto" name="foto" class="w-full px-4 py-3 bg-white text-blue-800 border border-blue-300 rounded-lg focus:ring-2 focus:ring-[#0d6efd] focus:border-[#0d6efd] outline-none transition-colors duration-200" placeholder="https://exemplo.com/imagem.png">
-            </div>
-
-            <div>
-                <label for="custo" class="block text-sm font-medium text-blue-700 mb-1">Custo (em moedas)</label>
-                <input type="number" id="custo" name="custo" class="w-full px-4 py-3 bg-white text-blue-800 border border-blue-300 rounded-lg focus:ring-2 focus:ring-[#0d6efd] focus:border-[#0d6efd] outline-none transition-colors duration-200" placeholder="Custo da vantagem">
-            </div>
-
-            <div>
-                <label for="empresaParceiraId" class="block text-sm font-medium text-blue-700 mb-1">ID da Empresa Parceira</label>
-                <input type="text" id="empresaParceiraId" name="empresaParceiraId" class="w-full px-4 py-3 bg-white text-blue-800 border border-blue-300 rounded-lg focus:ring-2 focus:ring-[#0d6efd] focus:border-[#0d6efd] outline-none transition-colors duration-200" placeholder="ID da empresa parceira">
-            </div>
-
-            <div>
-                <button type="submit" id="submitButton" class="w-full flex items-center justify-center bg-[#0d6efd] hover:bg-[#0b5ed7] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#0d6efd] focus:ring-opacity-75 shadow-lg">
-                    <span id="buttonText">Criar Vantagem</span>
-                    <div id="loadingSpinner" class="loader hidden"></div>
-                </button>
-            </div>
-        </form>
-
-        <div id="responseMessage" class="mt-6 text-center text-sm">
-            <!-- Mensagens de sucesso ou erro serão exibidas aqui -->
-        </div>
-
+  <div class="bg-white shadow-2xl rounded-xl p-6 md:p-10 w-full max-w-lg border border-blue-200">
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-[#0d6efd]">Criar Nova Vantagem</h1>
+      <p id="empresaInfo" class="text-sm text-blue-600 mt-1"></p>
+      <p class="text-blue-700 mt-2">Preencha os dados abaixo para registrar uma nova vantagem.</p>
     </div>
 
-    <script>
-        // Elementos do DOM
-        const form = document.getElementById('criarVantagemForm');
-        const responseMessageDiv = document.getElementById('responseMessage');
-        const submitButton = document.getElementById('submitButton');
-        const buttonText = document.getElementById('buttonText');
-        const loadingSpinner = document.getElementById('loadingSpinner');
+    <form id="criarVantagemForm" class="space-y-6">
+      <div>
+        <label for="descricao" class="block text-sm font-medium text-blue-700 mb-1">Descrição</label>
+        <input type="text" id="descricao" name="descricao"
+          class="w-full px-4 py-3 bg-white text-blue-800 border border-blue-300 rounded-lg focus:ring-2 focus:ring-[#0d6efd] focus:border-[#0d6efd] outline-none transition-colors duration-200"
+          placeholder="Descrição da vantagem" required />
+      </div>
 
-        // Script para lidar com o envio do formulário
-        form.addEventListener('submit', async function (event) {
-            event.preventDefault(); // Previne o envio padrão do formulário
+      <div>
+        <label for="foto" class="block text-sm font-medium text-blue-700 mb-1">Foto (URL)</label>
+        <input type="text" id="foto" name="foto"
+          class="w-full px-4 py-3 bg-white text-blue-800 border border-blue-300 rounded-lg focus:ring-2 focus:ring-[#0d6efd] focus:border-[#0d6efd] outline-none transition-colors duration-200"
+          placeholder="https://exemplo.com/imagem.png" />
+      </div>
 
-            // Coleta os dados do formulário
-            const descricao = document.getElementById('descricao').value;
-            const foto = document.getElementById('foto').value;
-            const custoValue = document.getElementById('custo').value;
-            const empresaParceiraIdValue = document.getElementById('empresaParceiraId').value;
+      <div>
+        <label for="custo" class="block text-sm font-medium text-blue-700 mb-1">Custo (em moedas)</label>
+        <input type="number" id="custo" name="custo"
+          class="w-full px-4 py-3 bg-white text-blue-800 border border-blue-300 rounded-lg focus:ring-2 focus:ring-[#0d6efd] focus:border-[#0d6efd] outline-none transition-colors duration-200"
+          placeholder="Custo da vantagem" required />
+      </div>
 
-            buttonText.classList.add('hidden');
-            loadingSpinner.classList.remove('hidden');
-            submitButton.disabled = true;
-            responseMessageDiv.innerHTML = '';
+      <div>
+        <button type="submit" id="submitButton"
+          class="w-full flex items-center justify-center bg-[#0d6efd] hover:bg-[#0b5ed7] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#0d6efd] focus:ring-opacity-75 shadow-lg">
+          <span id="buttonText">Criar Vantagem</span>
+          <div id="loadingSpinner" class="loader hidden"></div>
+        </button>
+      </div>
+    </form>
 
-            const custoInt = parseInt(custoValue, 10);
+    <div id="responseMessage" class="mt-6 text-center text-sm"></div>
+  </div>
 
-            const vantagemPayload = {
-                descricao: descricao,
-                foto: foto || null, // Envia null se a string da foto estiver vazia
-                custo: custoInt,
-                empresaParceiraId: empresaParceiraIdValue
-            };
+  <script>
+    const empresaLogada = JSON.parse(localStorage.getItem("empresaLogada"));
+    const empresaInfo = document.getElementById("empresaInfo");
 
-            const baseUrl = 'http://localhost:9090'; // URL base da sua API
-            const apiUrl = `${baseUrl}/vantagem/criar`;
+    if (!empresaLogada || !empresaLogada.id) {
+      window.location.href = "loginEmpresa.html";
+    } else {
+      empresaInfo.textContent = `Empresa logada: ${empresaLogada.nome || 'ID: ' + empresaLogada.id}`;
+    }
 
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(vantagemPayload) // Envia o objeto como JSON
-                });
+    const form = document.getElementById('criarVantagemForm');
+    const responseMessageDiv = document.getElementById('responseMessage');
+    const submitButton = document.getElementById('submitButton');
+    const buttonText = document.getElementById('buttonText');
+    const loadingSpinner = document.getElementById('loadingSpinner');
 
-                if (response.ok) {
-                    const novaVantagem = await response.json(); // O backend retorna a vantagem criada
-                    showMessage(`Vantagem "${novaVantagem.descricao || 'sem descrição'}" criada com sucesso! ID: ${novaVantagem.id || 'N/A'}`, 'success');
-                    form.reset(); // Limpa o formulário após o sucesso
-                } else {
-                    // Trata erros, incluindo erros de validação do DTO
-                    let errorMessage = `Erro ao criar vantagem. Status: ${response.status}`;
-                    try {
-                        const errorData = await response.json(); // Tenta parsear como JSON
-                        if (Array.isArray(errorData) && errorData.length > 0) {
-                            // Se for uma lista de mensagens de erro (comum com BindingResult)
-                            errorMessage = errorData.join('<br>');
-                        } else if (typeof errorData === 'string') {
-                            errorMessage = errorData;
-                        } else if (errorData && errorData.message) {
-                            errorMessage = errorData.message;
-                        } else if (errorData && errorData.error) { // Comum para erros Spring
-                            errorMessage = `${errorData.error}: ${errorData.message || ''}`;
-                        }
-                        else {
-                            const textError = await response.text(); // Fallback para texto puro
-                            if (textError) errorMessage = textError;
-                        }
-                    } catch (e) {
-                        // Se o corpo do erro não for JSON, tenta ler como texto
-                        const textError = await response.text();
-                        if (textError) errorMessage = textError;
-                        console.warn("Não foi possível parsear a resposta de erro como JSON ou texto.", e);
-                    }
-                    showMessage(errorMessage, 'error');
-                }
-            } catch (error) {
-                // Erro de rede ou outro erro na requisição
-                console.error('Erro na requisição:', error);
-                showMessage(`Não foi possível conectar ao servidor. Verifique sua conexão e se o backend está rodando em ${baseUrl}.`, 'error');
-            } finally {
-                // Esconde o spinner e reabilita o botão
-                buttonText.classList.remove('hidden');
-                loadingSpinner.classList.add('hidden');
-                submitButton.disabled = false;
-            }
+    form.addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const descricao = document.getElementById('descricao').value;
+      const foto = document.getElementById('foto').value;
+      const custoValue = document.getElementById('custo').value;
+      const empresaParceiraIdValue = empresaLogada.id;
+
+      buttonText.classList.add('hidden');
+      loadingSpinner.classList.remove('hidden');
+      submitButton.disabled = true;
+      responseMessageDiv.innerHTML = '';
+
+      const custoInt = parseInt(custoValue, 10);
+
+      const vantagemPayload = {
+        descricao: descricao,
+        foto: foto || null,
+        custo: custoInt,
+        empresaParceiraId: empresaParceiraIdValue
+      };
+
+      const baseUrl = 'http://localhost:9090';
+      const apiUrl = `${baseUrl}/vantagem/criar`;
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(vantagemPayload)
         });
 
-        // Função para exibir mensagens
-        function showMessage(message, type) {
-            responseMessageDiv.innerHTML = ''; // Limpa mensagens anteriores
-            const messageElement = document.createElement('p');
-            messageElement.innerHTML = message; // Permite HTML nas mensagens (ex: <br>)
-            if (type === 'success') {
-                messageElement.className = 'text-green-600 bg-green-100 p-3 rounded-md border border-green-300';
-            } else if (type === 'error') {
-                messageElement.className = 'text-red-600 bg-red-100 p-3 rounded-md border border-red-300';
-            } else {
-                messageElement.className = 'text-[#0d6efd]'; // Cor de texto padrão
-            }
-            responseMessageDiv.appendChild(messageElement);
+        if (response.ok) {
+          const novaVantagem = await response.json();
+          showMessage(`Vantagem "${novaVantagem.descricao || 'sem descrição'}" criada com sucesso!`, 'success');
 
-            // Remove a mensagem após alguns segundos
-            setTimeout(() => {
-                if (responseMessageDiv.contains(messageElement)) {
-                    responseMessageDiv.removeChild(messageElement);
-                }
-            }, 7000);
+          setTimeout(() => {
+            window.location.href = "visualizarVantagens.html";
+          }, 1500);
+
+        } else {
+          let errorMessage = `Erro ao criar vantagem. Status: ${response.status}`;
+          try {
+            const errorData = await response.json();
+            if (Array.isArray(errorData) && errorData.length > 0) {
+              errorMessage = errorData.join('<br>');
+            } else if (typeof errorData === 'string') {
+              errorMessage = errorData;
+            } else if (errorData?.message) {
+              errorMessage = errorData.message;
+            } else if (errorData?.error) {
+              errorMessage = `${errorData.error}: ${errorData.message || ''}`;
+            } else {
+              const textError = await response.text();
+              if (textError) errorMessage = textError;
+            }
+          } catch (e) {
+            const textError = await response.text();
+            if (textError) errorMessage = textError;
+          }
+          showMessage(errorMessage, 'error');
         }
-    </script>
+      } catch (error) {
+        console.error('Erro na requisição:', error);
+        showMessage(`Erro de conexão com o servidor. Verifique se está rodando em ${baseUrl}.`, 'error');
+      } finally {
+        buttonText.classList.remove('hidden');
+        loadingSpinner.classList.add('hidden');
+        submitButton.disabled = false;
+      }
+    });
+
+    function showMessage(message, type) {
+      responseMessageDiv.innerHTML = '';
+      const messageElement = document.createElement('p');
+      messageElement.innerHTML = message;
+      if (type === 'success') {
+        messageElement.className = 'text-green-600 bg-green-100 p-3 rounded-md border border-green-300';
+      } else if (type === 'error') {
+        messageElement.className = 'text-red-600 bg-red-100 p-3 rounded-md border border-red-300';
+      } else {
+        messageElement.className = 'text-[#0d6efd]';
+      }
+      responseMessageDiv.appendChild(messageElement);
+    }
+  </script>
 </body>
 
 </html>
+
