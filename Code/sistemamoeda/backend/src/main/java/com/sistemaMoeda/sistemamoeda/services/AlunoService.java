@@ -1,11 +1,13 @@
 package com.sistemaMoeda.sistemamoeda.services;
 
+import com.sistemaMoeda.sistemamoeda.exception.SaldoInsuficienteException;
 import com.sistemaMoeda.sistemamoeda.model.Aluno;
 import com.sistemaMoeda.sistemamoeda.model.Transacao;
 import com.sistemaMoeda.sistemamoeda.model.Vantagem;
 import com.sistemaMoeda.sistemamoeda.repository.AlunoRepository;
 import com.sistemaMoeda.sistemamoeda.repository.VantagemRepository;
 import com.sistemaMoeda.sistemamoeda.repository.TransacaoRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -86,7 +88,7 @@ public class AlunoService {
             transacao.setAlunoId(alunoId);
             transacaoRepository.save(transacao);
         } else {
-            throw new RuntimeException("Saldo insuficiente para resgatar a vantagem!");
+            throw new SaldoInsuficienteException("Saldo insuficiente para resgatar a vantagem!");
         }
     }
 }

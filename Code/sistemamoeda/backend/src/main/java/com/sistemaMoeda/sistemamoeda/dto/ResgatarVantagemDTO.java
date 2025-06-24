@@ -5,7 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
-public class ResgatarVantagemDTO {
+public class
+ResgatarVantagemDTO {
     @NotBlank(message = "O ID do aluno é obrigatório")
     private String alunoId;
 
