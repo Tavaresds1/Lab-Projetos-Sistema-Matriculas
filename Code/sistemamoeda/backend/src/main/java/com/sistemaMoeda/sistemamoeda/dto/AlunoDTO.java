@@ -3,11 +3,13 @@ package com.sistemaMoeda.sistemamoeda.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+import javax.validation.constraints.Size;
 
 
 public class AlunoDTO extends UsuarioDTO {
 
     @NotBlank(message = "Nome é obrigatório")
+    @Size(max = 100, message = "O nome deve ter no máximo 100 caracteres.")
     private String nome;
 
     @NotBlank(message = "Endereço é obrigatório")
